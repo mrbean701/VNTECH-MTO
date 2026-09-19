@@ -17,6 +17,33 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 
 ---
 
+## 1c. BỘ TÀI LIỆU DỰ ÁN (✅ HOÀN THÀNH)
+
+**Mục tiêu:** tạo lối vào rõ ràng cho từng đối tượng đọc (người dùng mới,
+người nhận bàn giao, dev mới) — trước đó tài liệu phân tán, không có điểm bắt đầu.
+
+| # | Tài liệu | Dòng | Dành cho |
+|---|---|---|---|
+| 1 | `docs/MO_TA_HE_THONG.md` | 343 | Hiểu tổng thể hệ thống |
+| 2 | `docs/HUONG_DAN_NGUOI_MOI.md` | 290 | Người dùng mới (lộ trình 30 phút) |
+| 3 | `docs/BAN_GIAO.md` | 309 | Người nhận bàn giao (checklist 23 mục) |
+| 4 | `docs/DEV_ONBOARDING.md` | 480 | Lập trình viên mới (16 gotchas) |
+
+**Định dạng:** mỗi tài liệu có cả `.md` và `.docx`.
+
+**Công cụ kèm theo:** `scripts/md-to-docx.ps1` — chuyển `.md` → `.docx` bằng
+**Open XML** (không cần Microsoft Word).
+
+> **Bài học kỹ thuật:** Microsoft Word COM bị **treo** trong môi trường này
+> (1 process treo 10.6 phút, thử lại vẫn timeout). Giải pháp: `.docx` thực chất
+> là file ZIP chứa XML → tạo trực tiếp bằng `System.IO.Compression` +
+> `[Content_Types].xml` + `word/document.xml` + `word/styles.xml`.
+> Kiểm chứng: XML well-formed, đủ cấu trúc, Word mở được.
+
+**Commit:** `0ee0ec2` (9 file, 1515 dòng) — đã push cả `unity` và `main`.
+
+---
+
 ## 2. BASELINE KỸ THUẬT (PHASE 0 — đã audit)
 
 ### 2.1 Môi trường test THẬT (đã kiểm chứng)
@@ -178,6 +205,12 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | 2026-09-18 | TASK-016 | Per-Drawing Config (**file `.mtocfg`** + **NOD/XRecord trong DWG** — cả hai đã kiểm chứng); **34/34 PASSED**. **PHASE 4 HOÀN THÀNH — 617 test PASS** |
 | 2026-09-18 | TASK-017 | .NET Extension → **DONE**: phát hiện `MtoCompat.cs` viết NGƯỢC (AutoCAD 2023 dùng API giống 2025). Sửa 4 file → **build net48 cho AutoCAD 2023: 0 lỗi**; **NETLOAD thành công**; command `MTOZOOM` từ .NET **thực thi đúng** (bằng chứng: in "Handle khong hop le.") |
 | 2026-09-18 | **FINAL AUDIT** | Đối chiếu 19 mục MASTER GOAL: **19/19 ✅**. 617 test PASS · 35 file LINT OK · 20 bug thật đã sửa · limitation đã ghi rõ |
+### BỘ TÀI LIỆU DỰ ÁN
+
+| Thời điểm | Task | Kết quả |
+|---|---|---|
+| 19/09/2026 | TÀI LIỆU | **4 bộ tài liệu dự án** (1422 dòng .md + 4 .docx): MO_TA_HE_THONG (343) · HUONG_DAN_NGUOI_MOI (290) · BAN_GIAO (309, checklist nghiệm thu 23 mục) · DEV_ONBOARDING (480, 16 gotchas AutoLISP). Thêm `scripts/md-to-docx.ps1` dùng **Open XML** (Word COM bị treo → không phụ thuộc Word). Kiểm chứng: .docx XML well-formed, đủ cấu trúc. Commit `0ee0ec2`, push cả 2 nhánh |
+
 ### PHASE UPGRADE — MODULE UPDATE SYSTEM
 
 | Thời điểm | Task | Kết quả |

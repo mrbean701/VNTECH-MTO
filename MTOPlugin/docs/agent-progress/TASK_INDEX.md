@@ -121,3 +121,17 @@ Kết quả kỳ vọng: dòng `TEST-PASS: <tên>` cho từng case, tổng kết
 | TASK-025 | Nâng build-lisp-installer (nhúng updater + version.json) | `scripts/build-lisp-installer.ps1` | cài thử | ⏳ TODO | 021 |
 | TASK-026 | 5 tài liệu docs/update/* | `docs/update/*.md` | — | ⏳ TODO | 018..025 |
 | TASK-027 | TEST-12,14,15 + tổng hợp + checkpoint cuối | `MASTER_STATUS` | TEST-01..16 | ⏳ TODO | tất cả |
+
+---
+
+## PHASE TÀI LIỆU — BỘ TÀI LIỆU DỰ ÁN (✅ HOÀN THÀNH)
+
+| Task | Nội dung | File | Trạng thái |
+|---|---|---|---|
+| DOC-01 | Mô tả hệ thống | ``docs/MO_TA_HE_THONG.md`` (343 dòng) | ✅ DONE |
+| DOC-02 | Hướng dẫn người mới (30 phút) | ``docs/HUONG_DAN_NGUOI_MOI.md`` (290 dòng) | ✅ DONE |
+| DOC-03 | Bàn giao + checklist 23 mục | ``docs/BAN_GIAO.md`` (309 dòng) | ✅ DONE |
+| DOC-04 | Onboarding dev mới | ``docs/DEV_ONBOARDING.md`` (480 dòng) | ✅ DONE |
+| DOC-05 | Công cụ md→docx (Open XML) | ``scripts/md-to-docx.ps1`` | ✅ DONE |
+
+Commit: `0ee0ec2` — push cả ``unity`` và ``main``.
