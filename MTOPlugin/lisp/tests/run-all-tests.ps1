@@ -1,4 +1,4 @@
-# ============================================================
+﻿# ============================================================
 # run-all-tests.ps1 -- Chay TOAN BO test suite MTO LISP
 # Dat tai: MTOPlugin/lisp/tests/run-all-tests.ps1
 #
@@ -29,7 +29,8 @@ $suites = @(
     "test-formula.lsp",
     "test-subtotal.lsp",
     "test-floor.lsp",
-    "test-config.lsp"
+    "test-config.lsp",
+    "test-selfup.lsp"
 )
 
 $results = @()

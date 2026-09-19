@@ -92,8 +92,8 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | — | **FINAL AUDIT** | ✅ DONE — **19/19 mục MASTER GOAL** |
 | **PHASE UPGRADE** | TASK-018 version.json single-source | ✅ DONE (637/637 · 5 nơi đồng bộ 1.0.0) |
 | **PHASE UPGRADE** | TASK-019 mto-selfup.lsp (logic thuần LISP) | ✅ DONE (643/643 · LINT 43 file) |
-| **PHASE UPGRADE** | TASK-020 test-selfup.lsp (TEST-01..11,13,16) | ⏳ TODO |
-| **PHASE UPGRADE** | TASK-021 Bootstrap updater | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-020 test-selfup.lsp (TEST-01..11,13,16) | ✅ DONE (42/42 · tổng 685/685) |
+| **PHASE UPGRADE** | TASK-021 Bootstrap updater | ✅ DONE (build 17 KB · --status/--check chạy thật) |
 | **PHASE UPGRADE** | TASK-022 update.sample.json + runtime | ⏳ TODO |
 | **PHASE UPGRADE** | TASK-023 Lệnh MTOVERSION/MTOUPGRADECHECK/MTOUPGRADE | ⏳ TODO |
 | **PHASE UPGRADE** | TASK-024 publish-update.ps1 + release manifest | ⏳ TODO |
@@ -101,7 +101,7 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | **PHASE UPGRADE** | TASK-026 5 tài liệu docs/update/* | ⏳ TODO |
 | **PHASE UPGRADE** | TASK-027 TEST-12,14,15 + checkpoint cuối | ⏳ TODO |
 
-**MASTER PROGRESS: 19/19 mục core + 2/10 PHASE UPGRADE** — **637 test PASS** — **PHASE 1+2+3+4+5 HOÀN THÀNH, 617 test PASS**
+**MASTER PROGRESS: 19/19 mục core + 4/10 PHASE UPGRADE** — **637 test PASS** — **PHASE 1+2+3+4+5 HOÀN THÀNH, 617 test PASS**
 
 > .NET host nay build **net48** cho AutoCAD 2023 (máy hiện có): build 0 lỗi, NETLOAD thành công,
 > command `MTOZOOM` từ .NET thực thi đúng. Xem `docs/agent-progress/FINAL_AUDIT.md`.
@@ -185,3 +185,5 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | 2026-09-18 | AUDIT + ARCH | Baseline xác nhận **633/633 PASS** (prompt ghi 617 = số cũ). Viết `docs/update/UPDATE_ARCHITECTURE.md` — 8 quyết định kiến trúc đã chốt (QĐ-1..8). Push git nhánh `unity` (172 file). Thêm PHASE UPGRADE TASK-018→027 vào TASK_INDEX + §4 |
 | 2026-09-18 | TASK-018 | **version.json single-source**: tạo `version.json` (baseline 1.0.0); loader đọc từ file (parser dòng phẳng, fallback hằng số, `mto-version-read`); build script đọc version.json; đồng bộ **5 nơi** (version.json · mto-loader · build script · mto.iss · 3× PackageContents.xml). InstallerLisp.cs cài version.json. **+4 test** → **637/637 PASS**, LINT 42 file OK. Không hồi quy |
 | 2026-09-18 | TASK-019 | **mto-selfup.lsp** (logic cập nhật thuần LISP, ~565 dòng): đọc/ghi JSON phẳng · semver compare · validate manifest 9 field bắt buộc · UpdateSource (HTTPS/local/file) · strip credential · **quyết định 5 action** (UPDATE/NOOP/MANDATORY/BLOCKED-MINVER/ERROR) · backup bookkeeping + prune KEEP=3 · marker kích hoạt session kế · log · payload validation + **chống zip-slip** · config update.json · **3 lệnh MTOVERSION/MTOUPGRADECHECK/MTOUPGRADE**. Thêm 5 hàm tiện ích vào core. **+6 test** → **643/643 PASS**, LINT 43 file OK. Sửa 1 lỗi ngoặc cuối c:MTOUPGRADE (lint bắt được) |
+| 2026-09-18 | TASK-020 | **test-selfup.lsp** — 42 test bao phu TEST-01..11/13/16: version fallback · parse manifest · semver (4 ca) · mandatory/optional · lỗi nguồn graceful · sha256 64-hex · payload structure + zip-slip · backup prune KEEP=3 · quyết định UPDATE/NOOP/BLOCKED-MINVER · **user data an toàn** · marker session kế · strip credential + HTTPS enforced. Thêm suite vào run-all-tests. **685/685 PASS**, LINT 44 file OK. Bug thật bắt được: mto-upd-json-read trả nil (thay bằng mto-upd-json-load dùng json-get đã kiểm chứng) · off-by-one trong strip-credential · (if p phải là (if q |
+| 2026-09-18 | TASK-021 | **Bootstrap updater** installer/updater/UpdaterApp.cs (~430 dòng) + scripts/build-updater.ps1 (csc.exe, 17 KB). Lệnh: --status --check --install --rollback. Luồng đủ 8 bước: manifest → semver → download (WebClient/local) → **verify SHA256** → giải nén **chống zip-slip** → verify payload → backup → activate (**chỉ app files, KHÔNG chạm config/**) → prune KEEP=3 → rollback. Test thật: --status đọc đúng 1.0.0 sau khi cài; --check với release giả 1.1.0 → báo **CO BAN MOI**, SHA256 in đúng. Phát hiện: bản cài cũ chưa có version.json → đã cài lại |

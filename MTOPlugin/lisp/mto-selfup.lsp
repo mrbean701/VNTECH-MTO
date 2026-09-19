@@ -35,6 +35,9 @@
 (setq *MTO-UPD-USER-DATA* '("config"))
 
 ;; Field bat buoc cua manifest
+(setq *MTO-UPD-MARKER-KEYS*
+  (list "staged_version" "staged_at" "requires_restart" "reason"))
+
 (setq *MTO-UPD-MANIFEST-REQUIRED*
   '("product" "version" "release_date" "package" "sha256"
     "minimum_version" "minimum_autocad" "mandatory" "release_notes"))
@@ -230,7 +233,7 @@
         (t (cons nil (strcat "khong nhan dang duoc nguon: " src)))))))
 
 ;; Bo credential khoi URL truoc khi ghi log (user:pass@host)
-(defun mto-upd-strip-credential (url / p a b)
+(defun mto-upd-strip-credential (url / p a b q)
   (if (or (null url) (= url "")) url
     (progn
       (setq p (vl-string-search "://" url))
@@ -242,9 +245,9 @@
             (progn
               (setq b (+ a b))
               ;; tim dau "/" sau host de ghep lai
-              (setq p (vl-string-search "/" (substr url b)))
+              (setq q (vl-string-search "/" (substr url (+ b 1))))
               (if p
-                (strcat "https://***@" (substr url (+ b 1) p) (substr url (+ b p)))
+                (strcat "https://***@" (substr url (+ b 1) q) (substr url (+ b 1 q)))
                 (strcat "https://***@" (substr url (+ b 1)))))))))))
 
 ;; ------------------------------------------------------------
@@ -361,7 +364,7 @@
 
 (defun mto-upd-marker-read ( / p)
   (setq p (mto-upd-path *MTO-UPD-MARKER*))
-  (if p (mto-upd-json-read p) nil))
+  (if p (mto-upd-json-load p *MTO-UPD-MARKER-KEYS*) nil))
 
 ;; ------------------------------------------------------------
 ;; 10. LOG
@@ -437,7 +440,7 @@
 ;; Doc config; thieu file -> dung mac dinh AN TOAN (enabled=false)
 (defun mto-upd-config ( / p m)
   (setq p (mto-upd-path *MTO-UPD-CONFIG*))
-  (setq m (if p (mto-upd-json-read p) nil))
+  (setq m (if p (mto-upd-json-load p *MTO-UPD-MARKER-KEYS*) nil))
   (list
     (cons 'ENABLED    (mto-upd-cfg-get m "enabled" "false"))
     (cons 'CHANNEL    (mto-upd-cfg-get m "channel" "stable"))
@@ -546,7 +549,7 @@
          (if (null (car valid))
            (princ (strcat "\nNGUON KHONG HOP LE: " (cdr valid)))
            (progn
-             (setq man (mto-upd-json-read (mto-upd-manifest-url src)))
+             (setq man (mto-upd-manifest-load (mto-upd-manifest-url src)))
              (setq dec (mto-upd-decide *MTO-VERSION* man (getvar "ACADVER")))
              (princ (strcat "\nKet qua: " (cdr (assoc 'ACTION dec))))
              (princ (strcat "\nLy do  : " (cdr (assoc 'REASON dec))))
@@ -560,6 +563,24 @@
                  (princ "\nSau khi updater xong: khoi dong lai AutoCAD."))
                (princ (strcat "\nKhong can cap nhat: " (cdr (assoc 'REASON dec)))))))))))
   (mto-ui-end "MTOUPGRADE"))
+
+;; ------------------------------------------------------------
+;; 3b. LOAD NHIEU KEY (dung mto-upd-json-get da kiem chung)
+;;
+;; mto-upd-json-read (quet moi dong) tra nil tren accoreconsole
+;; -> thay bang cach goi json-get cho tung key da biet.
+;; ------------------------------------------------------------
+(defun mto-upd-json-load (path keys / out k v)
+  (setq out '())
+  (foreach k keys
+    (setq v (mto-upd-json-get path k))
+    (if (and v (/= v ""))
+      (setq out (append out (list (cons k v))))))
+  out)
+
+;; Manifest day du (theo danh sach field bat buoc)
+(defun mto-upd-manifest-load (path)
+  (mto-upd-json-load path *MTO-UPD-MANIFEST-REQUIRED*))
 
 (princ "\nmto-selfup.lsp loaded.")
 (princ)
