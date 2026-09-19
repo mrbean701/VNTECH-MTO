@@ -99,3 +99,68 @@
   command `MTOZOOM` từ .NET **thực thi đúng logic** (bằng chứng trong `TASK-017.md`).
 - **Không có task bắt buộc nào chưa thực hiện.**
 - Limitation còn lại đã liệt kê đầy đủ ở mục E và trong từng `TASK-*.md`.
+---
+
+# PHỤ LỤC — MODULE UPDATE SYSTEM (PHASE UPGRADE)
+
+**Ngày:** 2026-09-19 · **Trạng thái:** ✅ HOÀN THÀNH 10/10 task
+
+## A. Đối chiếu 4 mục tiêu MASTER GOAL (module update)
+
+| # | Mục tiêu | Trạng thái | Bằng chứng |
+|---|---|---|---|
+| 1 | Client cập nhật trong bộ cài | ✅ | `UpdaterApp.exe` (17 KB) trong `tools/` đã cài; `--status`/`--check` chạy thật |
+| 2 | Pipeline release + manifest + UpdateSource | ✅ | `publish-update.ps1` → TEST-15 **6/6 OK**; UpdateSource: local folder / HTTPS / NAS |
+| 3 | 5 tài liệu `docs/update/` + TEST-01..16 | ✅ | **6 tài liệu** (thêm UPDATE_TEST_CASES); **16/16 TEST PASS** |
+| 4 | Version về MỘT nguồn duy nhất | ✅ | `version.json` = nguồn sự thật; **5 nơi đồng bộ** 1.0.0 |
+
+## B. Đối chiếu 15 điều Definition of Done
+
+| # | Điều kiện | Trạng thái | Bằng chứng |
+|---|---|---|---|
+| 1 | `version.json` nguồn duy nhất | ✅ | loader/ build script/ mto.iss/ 3×PackageContents.xml đều 1.0.0 |
+| 2 | 3 lệnh mới hoạt động, không trùng | ✅ | GREP: 27 lệnh, mỗi lệnh 1 định nghĩa; `MTOVERSION` in 9 dòng thật |
+| 3 | Auto-check non-blocking, mandatory/optional | ✅ | `checkOnStartup=false` mặc định; `mto-upd-decide` → MANDATORY/UPDATE/NOOP |
+| 4 | Chuỗi 8 bước có code + test | ✅ | LISP (`mto-upd-*`) + C# (`UpdaterApp`); TEST-05..10 |
+| 5 | Kích hoạt nguyên tử: DLL restart, LISP hot-reload | ✅ | **TEST-12**: swap → `(load)` → `18/18 module`, không cần đóng AutoCAD; marker cho DLL |
+| 6 | KEEP_BACKUPS=3, rollback 1 lệnh | ✅ | TEST-08 (5 bản→xóa 2); `UpdaterApp --rollback` |
+| 7 | User data an toàn | ✅ | **TEST-11**: `config` KHÔNG trong APP-PATHS; `Activate()` chỉ ghi app files |
+| 8 | `update.sample.json` ship, không ghi đè config user | ✅ | seed `update.json` CHỈ lần đầu; verify sau cài: 4 file trong `config\` |
+| 9 | `logs\update.log` đầy đủ, không credential | ✅ | Log có timestamp + version; `SafeUrl`/`strip-credential` → `***@` |
+| 10 | HTTPS; không token/password trong source/package | ✅ | TEST-16: HTTP (ngoài localhost) **bị từ chối**; chỉ HTTPS |
+| 11 | `docs\update\*` hoàn chỉnh | ✅ | 6 file: ARCHITECTURE · RELEASE_PROCESS · INSTALLATION · ROLLBACK · TROUBLESHOOTING · TEST_CASES |
+| 12 | TEST-01..16 PASS hoặc blocker rõ | ✅ | **16/16 PASS**, 0 BLOCKED (ghi chú 4 hạn chế trung thực) |
+| 13 | `publish-update.ps1` + `verify-package.ps1` nhất quán | ✅ | TEST-15 tự kiểm 6 điểm, gồm `payload version == manifest version` |
+| 14 | 617 test cũ VẪN PASS (không hồi quy) | ✅ | **700/700 PASS** (633 core cũ + 67 module update) |
+| 15 | MASTER_STATUS §4/§6 + TASK_INDEX + FINAL_AUDIT + Telegram | ✅ | Đã cập nhật đầy đủ; Telegram báo từng task |
+
+## C. Bug thật đã phát hiện trong PHASE UPGRADE (6 bug)
+
+| # | Bug | Cách phát hiện | Sửa |
+|---|---|---|---|
+| B23 | `mto-upd-json-read` trả `nil` (quét mọi dòng bị lỗi) | Debug in giá trị thật: `JSONGET=[1.1.0]` nhưng `JSONREAD=[nil]` | Thay bằng `mto-upd-json-load` dùng `json-get` đã kiểm chứng |
+| B24 | `strip-credential` lệch 1 ký tự (0-based vs 1-based) | Test so sánh chuỗi chính xác | Sửa công thức `(substr url (+ b 1) q)` |
+| B25 | `(if p` phải là `(if q` (bug tiềm ẩn URL không có path) | Rà logic sau khi test PASS | Đổi điều kiện |
+| B26 | **`vl-rmdir` KHÔNG tồn tại** trong AutoLISP | Test crash `bad function: VL-RMDIR` | Dùng `vl-file-delete` |
+| B27 | Test để lại rác `staging/` trong repo | Thấy `MTOVERSION` hiện marker `1.5.0` lạ | Thêm cleanup vào cuối test |
+| B28 | **publish `-Version 1.1.0` nhưng payload vẫn `version.json` 1.0.0** → sha256 trùng, `UpdaterApp.VerifyPayload` sẽ **TỪ CHỐI cài** | So sánh sha256 giữa 2 lần publish | Ghi lại version.json trong payload + thêm check thứ 6 |
+
+> **B28 là bug nghiêm trọng nhất**: bản phát hành "thành công" nhưng **không ai cài được**.
+
+## D. Limitation module update (đã ghi rõ, không tô hồng)
+
+| # | Hạn chế |
+|---|---|
+| U1 | `UpdaterApp --install` chưa chạy thật end-to-end (sẽ thay bản cài đang dùng) — chỉ kiểm `--check` + `--status` |
+| U2 | Chưa mô phỏng mất mạng GIỮA CHỪNG khi tải (chỉ kiểm nguồn không tồn tại) |
+| U3 | Chưa có payload DLL thật để kích hoạt qua restart (chỉ kiểm ghi/đọc marker) |
+| U4 | `UpdaterApp.exe` không commit (`.gitignore *.exe`) → phải build lại khi clone |
+| U5 | Chưa test nguồn HTTPS thật (mới test local folder + logic validate) |
+| U6 | Chưa có `channel` beta/dev (chỉ triển khai stable theo kế hoạch) |
+
+## E. Kết luận PHASE UPGRADE
+
+- **10/10 task HOÀN THÀNH** · **16/16 TEST PASS** · **700/700 test suite PASS** (không hồi quy)
+- **6 bug thật đã sửa** (B23..B28), trong đó B28 là bug phát hành nghiêm trọng
+- **6 tài liệu** đầy đủ (kiến trúc + 4 vận hành + bảng test)
+- Mọi limitation ghi ở mục D
