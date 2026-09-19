@@ -14,11 +14,29 @@
 # ============================================================
 
 param(
-    [string]$Version = "1.0.0",
+    [string]$Version = "",
     [switch]$SkipDll
 )
 
 $ErrorActionPreference = "Stop"
+
+# ============================================================
+# PHIEN BAN -- doc tu NGUON SU THAT DUY NHAT: version.json
+# (neu -Version duoc truyen thi uu tien tham so dong lenh)
+# ============================================================
+$versionFile = Join-Path (Split-Path -Parent $PSScriptRoot) "version.json"
+if ($Version -eq "") {
+    if (Test-Path -LiteralPath $versionFile) {
+        try {
+            $vj = Get-Content -LiteralPath $versionFile -Raw -Encoding UTF8 | ConvertFrom-Json
+            $Version = $vj.version
+            Write-Host ("Phien ban (tu version.json): {0}" -f $Version) -ForegroundColor Cyan
+        } catch {
+            Write-Warning ("Khong doc duoc version.json: {0}" -f $_.Exception.Message)
+        }
+    }
+    if (-not $Version) { $Version = "1.0.0"; Write-Warning "Dung fallback 1.0.0" }
+}
 
 $root        = Split-Path -Parent $PSScriptRoot
 $csc         = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
@@ -63,6 +81,10 @@ foreach ($tn in @("import-materials.ps1","create-material-template.ps1")) {
 Write-Host "  config    : rules.sample.json"
 
 # 1c. docs (chi tai lieu nguoi dung)
+# 1d. version.json (nguon phien ban cho ban cai)
+if (Test-Path -LiteralPath $versionFile) { Copy-Item $versionFile -Destination $temp }
+Write-Host "  version   : version.json"
+
 $dstDocs = Join-Path $temp "docs"
 New-Item -ItemType Directory -Force -Path $dstDocs | Out-Null
 # Uu tien ban Word (.docx) cho nguoi dung cuoi; giu them .md cho ky thuat

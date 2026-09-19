@@ -101,3 +101,23 @@
 ```
 
 Kết quả kỳ vọng: dòng `TEST-PASS: <tên>` cho từng case, tổng kết `TESTS: n/n PASSED`.
+---
+
+## PHASE UPGRADE — MODULE UPDATE SYSTEM (Offline Package + Online Update)
+
+> Kế hoạch chi tiết: `docs/update/UPDATE_ARCHITECTURE.md`
+> Baseline phiên bản: **1.0.0** · Nguồn sự thật: `version.json`
+> Nguyên tắc: chỉ THÊM, KHÔNG rewrite MTO core, KHÔNG sửa nhánh .NET
+
+| Task | Nội dung | File chính | Test | Trạng thái | Phụ thuộc |
+|---|---|---|---|---|---|
+| TASK-018 | version.json single-source (gộp 4 nơi lệch) | `version.json` | LINT + load-check | ⏳ TODO | — |
+| TASK-019 | Logic cập nhật thuần LISP (semver, manifest, backup, marker) | `lisp/mto-selfup.lsp` | — | ⏳ TODO | 018 |
+| TASK-020 | Test module update | `lisp/tests/test-selfup.lsp` | TEST-01..11,13,16 | ⏳ TODO | 019 |
+| TASK-021 | Bootstrap updater (tải/verify/swap độc lập LISP) | `installer/updater/` | build 0 lỗi | ⏳ TODO | 018 |
+| TASK-022 | Cấu hình `update.sample.json` + đọc runtime | `config/update.sample.json` | headless | ⏳ TODO | 019 |
+| TASK-023 | 3 lệnh MTOVERSION / MTOUPGRADECHECK / MTOUPGRADE | `lisp/mto-selfup.lsp` | TEST-14 | ⏳ TODO | 019,022 |
+| TASK-024 | Pipeline phát hành release | `scripts/publish-update.ps1` | TEST-15 | ⏳ TODO | 018,021 |
+| TASK-025 | Nâng build-lisp-installer (nhúng updater + version.json) | `scripts/build-lisp-installer.ps1` | cài thử | ⏳ TODO | 021 |
+| TASK-026 | 5 tài liệu docs/update/* | `docs/update/*.md` | — | ⏳ TODO | 018..025 |
+| TASK-027 | TEST-12,14,15 + tổng hợp + checkpoint cuối | `MASTER_STATUS` | TEST-01..16 | ⏳ TODO | tất cả |

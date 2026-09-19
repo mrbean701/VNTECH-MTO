@@ -1,0 +1,9 @@
+{
+  "product": "MTOPro",
+  "version": "1.0.0",
+  "release_date": "2026-09-18",
+  "minimum_autocad": "24.0",
+  "autocad_series": "R24.0-R24.9",
+  "channel": "stable",
+  "notes": "NGUON SU THAT DUY NHAT ve phien ban. Moi noi khac phai doc tu file nay. RANG BUOC: object PHANG, moi field 1 dong, KHONG field long nhau, KHONG chuoi nhieu dong -- vi AutoLISP khong co JSON parser."
+}

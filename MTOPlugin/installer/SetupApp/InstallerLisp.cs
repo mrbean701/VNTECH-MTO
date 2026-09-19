@@ -366,6 +366,20 @@ namespace MTOPro.Setup
             CopyDir(srcLisp, LispDir, ref lispCount);
             Log("Da cai " + lispCount + " file LISP -> " + LispDir);
 
+            // 1b) version.json (nguon phien ban - application file, duoc ghi de)
+            try
+            {
+                string srcVer = Path.Combine(tmp, "version.json");
+                if (File.Exists(srcVer))
+                {
+                    string dstVer = Path.Combine(InstallRoot, "version.json");
+                    File.Copy(srcVer, dstVer, true);
+                    files++;
+                    Log("Da cai version.json -> " + dstVer);
+                }
+            }
+            catch (Exception exV) { Log("Loi cai version.json: " + exV.Message); }
+
             // 2) Bo quy tac mau (khong ghi de)
             string srcRules = Path.Combine(tmp, "config", "rules.sample.json");
             Directory.CreateDirectory(ConfigDir);

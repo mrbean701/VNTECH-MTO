@@ -280,5 +280,44 @@
 ;; 6. KHOI TAO
 ;; ------------------------------------------------------------
 
+;; ------------------------------------------------------------
+;; 5b. TIEN ICH BO SUNG (dung cho module cap nhat + module khac)
+;; ------------------------------------------------------------
+
+;; Chuoi -> chu THUONG. (strcase s T): tham so 2 la downcase-p.
+(defun mto-str-down (s) (if s (strcase s T) ""))
+
+;; Chuoi chi gom CHU SO? (dung cho parse semver)
+(defun mto-str-num-p (s / i ch ok)
+  (if (or (null s) (= s "")) nil
+    (progn
+      (setq ok t) (setq i 1)
+      (while (and ok (<= i (strlen s)))
+        (setq ch (ascii (substr s i 1)))
+        (if (or (< ch 48) (> ch 57)) (setq ok nil))
+        (setq i (1+ i)))
+      ok)))
+
+;; Chuoi s bat dau bang prefix? (khong phan biet hoa/thuong)
+(defun mto-str-prefix-p (s prefix)
+  (if (or (null s) (null prefix)) nil
+    (= (mto-str-down (substr s 1 (strlen prefix))) (mto-str-down prefix))))
+
+;; Tim chuoi con (khong phan biet hoa/thuong). Tra vi tri 0-based hoac nil.
+(defun mto-str-search (s sub)
+  (if (or (null s) (null sub)) nil
+    (vl-string-search (mto-str-down sub) (mto-str-down s))))
+
+;; Thay phan tu thu n (0-based) trong list bang val -> tra list MOI
+(defun mto-subst-nth (n val lst / i out)
+  (setq i 0)
+  (setq out '())
+  (foreach x lst
+    (if (= i n)
+      (setq out (append out (list val)))
+      (setq out (append out (list x))))
+    (setq i (1+ i)))
+  out)
+
 (princ "\nmto-core.lsp loaded.")
 (princ)

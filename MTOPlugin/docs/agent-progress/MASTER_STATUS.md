@@ -90,8 +90,18 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | PHASE 4 | TASK-016 Per-Drawing Configuration | ✅ DONE (34/34) |
 | PHASE 5 | TASK-017 .NET Extension (UI) | ✅ DONE (net48 build 0 lỗi · NETLOAD OK · MTOZOOM chạy) |
 | — | **FINAL AUDIT** | ✅ DONE — **19/19 mục MASTER GOAL** |
+| **PHASE UPGRADE** | TASK-018 version.json single-source | ✅ DONE (637/637 · 5 nơi đồng bộ 1.0.0) |
+| **PHASE UPGRADE** | TASK-019 mto-selfup.lsp (logic thuần LISP) | ✅ DONE (643/643 · LINT 43 file) |
+| **PHASE UPGRADE** | TASK-020 test-selfup.lsp (TEST-01..11,13,16) | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-021 Bootstrap updater | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-022 update.sample.json + runtime | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-023 Lệnh MTOVERSION/MTOUPGRADECHECK/MTOUPGRADE | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-024 publish-update.ps1 + release manifest | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-025 Nâng build-lisp-installer | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-026 5 tài liệu docs/update/* | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-027 TEST-12,14,15 + checkpoint cuối | ⏳ TODO |
 
-**MASTER PROGRESS: 19 / 19 mục nghiệp vụ** — **PHASE 1+2+3+4+5 HOÀN THÀNH, 617 test PASS**
+**MASTER PROGRESS: 19/19 mục core + 2/10 PHASE UPGRADE** — **637 test PASS** — **PHASE 1+2+3+4+5 HOÀN THÀNH, 617 test PASS**
 
 > .NET host nay build **net48** cho AutoCAD 2023 (máy hiện có): build 0 lỗi, NETLOAD thành công,
 > command `MTOZOOM` từ .NET thực thi đúng. Xem `docs/agent-progress/FINAL_AUDIT.md`.
@@ -168,3 +178,10 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | 2026-09-18 | TASK-016 | Per-Drawing Config (**file `.mtocfg`** + **NOD/XRecord trong DWG** — cả hai đã kiểm chứng); **34/34 PASSED**. **PHASE 4 HOÀN THÀNH — 617 test PASS** |
 | 2026-09-18 | TASK-017 | .NET Extension → **DONE**: phát hiện `MtoCompat.cs` viết NGƯỢC (AutoCAD 2023 dùng API giống 2025). Sửa 4 file → **build net48 cho AutoCAD 2023: 0 lỗi**; **NETLOAD thành công**; command `MTOZOOM` từ .NET **thực thi đúng** (bằng chứng: in "Handle khong hop le.") |
 | 2026-09-18 | **FINAL AUDIT** | Đối chiếu 19 mục MASTER GOAL: **19/19 ✅**. 617 test PASS · 35 file LINT OK · 20 bug thật đã sửa · limitation đã ghi rõ |
+### PHASE UPGRADE — MODULE UPDATE SYSTEM
+
+| Thời điểm | Task | Kết quả |
+|---|---|---|
+| 2026-09-18 | AUDIT + ARCH | Baseline xác nhận **633/633 PASS** (prompt ghi 617 = số cũ). Viết `docs/update/UPDATE_ARCHITECTURE.md` — 8 quyết định kiến trúc đã chốt (QĐ-1..8). Push git nhánh `unity` (172 file). Thêm PHASE UPGRADE TASK-018→027 vào TASK_INDEX + §4 |
+| 2026-09-18 | TASK-018 | **version.json single-source**: tạo `version.json` (baseline 1.0.0); loader đọc từ file (parser dòng phẳng, fallback hằng số, `mto-version-read`); build script đọc version.json; đồng bộ **5 nơi** (version.json · mto-loader · build script · mto.iss · 3× PackageContents.xml). InstallerLisp.cs cài version.json. **+4 test** → **637/637 PASS**, LINT 42 file OK. Không hồi quy |
+| 2026-09-18 | TASK-019 | **mto-selfup.lsp** (logic cập nhật thuần LISP, ~565 dòng): đọc/ghi JSON phẳng · semver compare · validate manifest 9 field bắt buộc · UpdateSource (HTTPS/local/file) · strip credential · **quyết định 5 action** (UPDATE/NOOP/MANDATORY/BLOCKED-MINVER/ERROR) · backup bookkeeping + prune KEEP=3 · marker kích hoạt session kế · log · payload validation + **chống zip-slip** · config update.json · **3 lệnh MTOVERSION/MTOUPGRADECHECK/MTOUPGRADE**. Thêm 5 hàm tiện ích vào core. **+6 test** → **643/643 PASS**, LINT 43 file OK. Sửa 1 lỗi ngoặc cuối c:MTOUPGRADE (lint bắt được) |

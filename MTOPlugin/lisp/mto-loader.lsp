@@ -41,9 +41,84 @@
     "mto-subtotal.lsp"
     ;; PHASE 4
     "mto-floor.lsp"
-    "mto-config.lsp"))
+    "mto-config.lsp"
+    ;; PHASE UPGRADE
+    "mto-selfup.lsp"))
 
-(setq *MTO-VERSION* "0.6.0-lisp")
+;; ============================================================
+;; PHIEN BAN -- NGUON SU THAT DUY NHAT: <MTO-HOME>/version.json
+;;
+;; AutoLISP KHONG co JSON parser -> doc bang cach DON GIAN:
+;;   version.json la object PHANG, moi field 1 dong dang  "key": "value",
+;;   -> tim dong chua "key" roi lay chuoi giua cap dau " thu 2.
+;;   (RANG BUOC: khong duoc viet version.json 1 dong / long nhau)
+;;
+;; Loader phai TU CHUA logic nay (khong dung ham cua module khac) vi
+;; loader chay TRUOC khi cac module duoc nap.
+;; ============================================================
+
+;; Gia tri chuoi cua 1 key trong object JSON phang. nil neu khong co.
+(defun mto-ver-line-has-key (line key / pat p rest)
+  (setq pat (strcat "\"" key "\""))
+  (setq p (vl-string-search pat line))
+  (if (null p) nil
+    (progn
+      (setq rest (substr line (+ p (strlen pat) 1)))
+      (setq rest (vl-string-left-trim " \t" rest))
+      (and (> (strlen rest) 0) (= (substr rest 1 1) ":")))))
+
+(defun mto-ver-line-value (line / p v q)
+  (setq p (vl-string-search ":" line))
+  (if (null p) nil
+    (progn
+      (setq v (substr line (+ p 2)))
+      (setq v (vl-string-trim " \t\r\n" v))
+      (if (and (> (strlen v) 0) (= (substr v (strlen v) 1) ","))
+        (setq v (vl-string-trim " \t\r\n" (substr v 1 (1- (strlen v))))))
+      (if (and (> (strlen v) 1) (= (substr v 1 1) "\""))
+        (progn
+          (setq q (vl-string-search "\"" (substr v 2)))
+          (if q (substr v 2 q) (substr v 2)))
+        v))))
+
+(defun mto-ver-read-key (path key / f line found)
+  (if (or (null path) (null key) (= path "")) nil
+    (progn
+      (setq found nil)
+      (setq f (open path "r"))
+      (if (null f) nil
+        (progn
+          (while (and (null found) (setq line (read-line f)))
+            (if (mto-ver-line-has-key line key)
+              (setq found (mto-ver-line-value line))))
+          (close f)
+          found)))))
+
+;; Duong dan version.json cua bo cai hien tai
+(defun mto-ver-file ( / base)
+  (setq base *MTO-HOME*)
+  (if (or (null base) (= base ""))
+    ;; thu tim qua Support Path (ban cai chuan: <MTOPro>\lisp)
+    (progn
+      (setq base (vl-filename-directory (findfile "mto-loader.lsp")))
+      (if base (setq base (vl-filename-directory base)))))
+  (if (and base (/= base ""))
+    (strcat base "/version.json")
+    nil))
+
+;; Doc phien ban: uu tien version.json, fallback hang so an toan
+(defun mto-version-read ( / fv v sz)
+  (setq v nil)
+  (setq fv (mto-ver-file))
+  (if fv
+    (progn
+      (setq sz (vl-catch-all-apply 'vl-file-size (list fv)))
+      (if (and (not (vl-catch-all-error-p sz)) sz (> sz 0))
+        (setq v (mto-ver-read-key fv "version")))))
+  (if (and v (/= v "")) v *MTO-VERSION-FALLBACK*))
+
+(setq *MTO-VERSION-FALLBACK* "1.0.0")
+(setq *MTO-VERSION* (mto-version-read))
 
 ;; Load tat ca module tu thu muc `base`.
 ;; Tra ve alist: ((OK . n) (FAIL . n) (MISSING . (ten-file...)))

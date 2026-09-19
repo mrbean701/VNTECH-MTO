@@ -11,8 +11,8 @@
   (mto-assert-true "modules: *MTO-MODULES* ton tai"
     (listp *MTO-MODULES*))
 
-  (mto-assert-equal "modules: co 17 module (PHASE 1+2+3+4 + UI)"
-    17 (length *MTO-MODULES*))
+  (mto-assert-equal "modules: co 18 module (PHASE 1+2+3+4 + UI + selfup)"
+    18 (length *MTO-MODULES*))
 
   (mto-assert-true "modules: co mto-core.lsp"
     (member "mto-core.lsp" *MTO-MODULES*))
@@ -31,6 +31,30 @@
 
   (mto-assert-true "modules: co mto-subtotal.lsp (PHASE 3)"
     (member "mto-subtotal.lsp" *MTO-MODULES*))
+
+  ;; ---------- VERSION tu nguon su that duy nhat (TASK-018) ----------
+  (mto-assert-true "version: ham mto-version-read ton tai"
+    (not (null (vl-symbol-value 'mto-version-read))))
+  (mto-assert-true "version: hang fallback ton tai"
+    (not (null (vl-symbol-value '*MTO-VERSION-FALLBACK*))))
+  ;; ---------- TASK-019: module cap nhat ----------
+  (mto-assert-true "modules: co mto-selfup.lsp (UPDATE SYSTEM)"
+    (member "mto-selfup.lsp" *MTO-MODULES*))
+  (mto-assert-true "command: MTOVERSION dinh nghia"
+    (not (null (vl-symbol-value 'c:MTOVERSION))))
+  (mto-assert-true "command: MTOUPGRADECHECK dinh nghia"
+    (not (null (vl-symbol-value 'c:MTOUPGRADECHECK))))
+  (mto-assert-true "command: MTOUPGRADE dinh nghia"
+    (not (null (vl-symbol-value 'c:MTOUPGRADE))))
+  (mto-assert-true "selfup: ham mto-upd-decide ton tai"
+    (not (null (vl-symbol-value 'mto-upd-decide))))
+  (mto-assert-true "selfup: ham mto-upd-semver-compare ton tai"
+    (not (null (vl-symbol-value 'mto-upd-semver-compare))))
+
+  (mto-assert-equal "version: *MTO-VERSION* doc tu version.json = 1.0.0"
+    "1.0.0" *MTO-VERSION*)
+  (mto-assert-true "version: tim duoc file version.json tu *MTO-HOME*"
+    (not (null (mto-ver-file))))
 
   (mto-assert-true "modules: co mto-ui.lsp (hien thi ten lenh)"
     (member "mto-ui.lsp" *MTO-MODULES*))
@@ -53,8 +77,8 @@
   (setq base (vl-filename-directory base))          ; <lisp>
 
   (setq res (mto-load-modules base))
-  (mto-assert-equal "load: OK = 17 file"
-    17 (cdr (assoc 'OK res)))
+  (mto-assert-equal "load: OK = 18 file"
+    18 (cdr (assoc 'OK res)))
   (mto-assert-equal "load: FAIL = 0"
     0 (cdr (assoc 'FAIL res)))
   (mto-assert-equal "load: khong thieu file nao"
@@ -65,10 +89,10 @@
   (setq res (mto-load-modules "D:/khong-ton-tai-thu-muc-nay"))
   (mto-assert-equal "load sai: OK = 0"
     0 (cdr (assoc 'OK res)))
-  (mto-assert-equal "load sai: FAIL = 17"
-    17 (cdr (assoc 'FAIL res)))
-  (mto-assert-equal "load sai: liet ke 17 file thieu"
-    17 (length (cdr (assoc 'MISSING res))))
+  (mto-assert-equal "load sai: FAIL = 18"
+    18 (cdr (assoc 'FAIL res)))
+  (mto-assert-equal "load sai: liet ke 18 file thieu"
+    18 (length (cdr (assoc 'MISSING res))))
 
   ;; ---------- 4. cac ham command ton tai sau khi load ----------
 

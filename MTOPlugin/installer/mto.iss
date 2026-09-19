@@ -16,7 +16,7 @@
 ;   3) iscc installer\mto.iss
 ; =====================================================================
 #define AppName "MTOPlugin"
-#define AppVersion "0.1.0"
+#define AppVersion "1.0.0"
 #define AppPublisher "Phong Du an"
 
 ; Bundle mặc định trong script này = nhóm C (2023-2026).
