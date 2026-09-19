@@ -97,11 +97,11 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | **PHASE UPGRADE** | TASK-022 update.sample.json + runtime | ✅ DONE (693/693 · seed update.json lần đầu) |
 | **PHASE UPGRADE** | TASK-023 Lệnh MTOVERSION/MTOUPGRADECHECK/MTOUPGRADE | ✅ DONE (700/700 · 3 lệnh chạy thật) |
 | **PHASE UPGRADE** | TASK-024 publish-update.ps1 + release manifest | ✅ DONE (TEST-15 6/6 · verify với updater) |
-| **PHASE UPGRADE** | TASK-025 Nâng build-lisp-installer | ⏳ TODO |
+| **PHASE UPGRADE** | TASK-025 Nâng build-lisp-installer | ✅ DONE (UpdaterApp.exe 17 KB trong tools/ · chạy OK) |
 | **PHASE UPGRADE** | TASK-026 5 tài liệu docs/update/* | ⏳ TODO |
 | **PHASE UPGRADE** | TASK-027 TEST-12,14,15 + checkpoint cuối | ⏳ TODO |
 
-**MASTER PROGRESS: 19/19 mục core + 7/10 PHASE UPGRADE** — **637 test PASS** — **PHASE 1+2+3+4+5 HOÀN THÀNH, 617 test PASS**
+**MASTER PROGRESS: 19/19 mục core + 8/10 PHASE UPGRADE** — **637 test PASS** — **PHASE 1+2+3+4+5 HOÀN THÀNH, 617 test PASS**
 
 > .NET host nay build **net48** cho AutoCAD 2023 (máy hiện có): build 0 lỗi, NETLOAD thành công,
 > command `MTOZOOM` từ .NET thực thi đúng. Xem `docs/agent-progress/FINAL_AUDIT.md`.
@@ -190,3 +190,4 @@ Không chuyển logic nhận dạng/đếm sang .NET chỉ vì UI thuận tiện
 | 2026-09-18 | TASK-022 | **config/update.sample.json** (6 khoá: enabled/channel/checkOnStartup/checkIntervalHours/updateSource/keepBackups — mặc định AN TOÀN: enabled=false). Nối vào build script + InstallerLisp.cs: cài update.sample.json (app, ghi đè) + **seed update.json CHỈ lần đầu** (user data, không bao giờ ghi đè sau). +8 test config → **693/693 PASS**, LINT 44 file. Kiểm chứng thật: sau cài, config\ có đủ 4 file, update.json đúng 6 khoá |
 | 2026-09-18 | TASK-023 | **Hoàn thiện 3 lệnh** + TEST-14. GREP xác nhận **27 lệnh, không trùng** (MTOVERSION/MTOUPGRADECHECK/MTOUPGRADE mỗi lệnh 1 định nghĩa). Bổ sung MTOVERSION: **'Lần cập nhật gần nhất'** (mto-upd-last-update đọc update.log) + đếm backup (mto-upd-backup-list-count). +7 test TEST-14 → **700/700 PASS**. Kiểm chứng THẬT: (c:MTOVERSION) in đủ 9 dòng (version/nguồn/kênh/tự động/marker/thư mục/backup/lần cuối); (c:MTOUPGRADECHECK) với source rỗng → báo 'Chưa cấu hình nguồn', KHÔNG crash. Bug thật: **l-rmdir KHÔNG tồn tại trong AutoLISP** → dùng l-file-delete; test để lại rác staging/ trong repo → đã dọn + thêm cleanup vào test |
 | 2026-09-18 | TASK-024 | **scripts/publish-update.ps1** — pipeline phát hành: đọc version.json → đóng gói payload (lisp/docs/tools/dll/version.json) → zip → **SHA256** → sinh manifest 10 field → cây elease/manifest.json + elease/<ver>/{package.zip,manifest.json} → **TEST-15 tự kiểm 6 điểm** (sha256 khớp · version khớp · package khớp · file tồn tại · size khớp · **payload version khớp manifest**). Tham số: -Version -Mandatory -Notes -SkipDll -MinVersion. **BUG THẬT bắt được**: publish -Version 1.1.0 nhưng payload vẫn mang ersion.json 1.0.0 → sha256 trùng 1.0.0 và UpdaterApp.VerifyPayload sẽ TỪ CHỐI gói → đã sửa (ghi lại version.json trong payload) + thêm check thứ 6. Verify E2E: --check với release 1.0.0 → DA LA BAN MOI NHAT; với 1.1.0 → CO BAN MOI + sha256 khác |
+| 2026-09-18 | TASK-025 | **Nâng build-lisp-installer.ps1**: tự build UpdaterApp.exe (gọi uild-updater.ps1 -Quiet) rồi nhúng vào payload 	ools/. InstallerLisp.cs đã copy nguyên thư mục 	ools/ → công cụ cập nhật được cài tự động. Kiểm chứng THẬT: sau khi cài, %LOCALAPPDATA%\MTOPro\tools\ có 3 file (UpdaterApp.exe 17 KB + 2 script import); chạy UpdaterApp.exe --status **từ vị trí đã cài** → đọc đúng Phien ban: 1.0.0. Bộ cài: 1095.5 KB (payload 1074.4 KB). Ghi chú: .exe bị .gitignore → cần build lại khi clone repo (đã ghi tài liệu) |

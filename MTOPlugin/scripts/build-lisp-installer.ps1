@@ -85,6 +85,22 @@ foreach ($tn in @("import-materials.ps1","create-material-template.ps1")) {
 Write-Host "  config    : rules.sample.json"
 
 # 1c. docs (chi tai lieu nguoi dung)
+# 1c-2. UpdaterApp.exe (cong cu cap nhat) - build roi nhung vao tools/
+$updSrc = Join-Path $root "installer\updater\UpdaterApp.cs"
+$updExe = Join-Path $root "installer\updater\UpdaterApp.exe"
+if (Test-Path -LiteralPath $updSrc) {
+    $buildUpd = Join-Path $root "scripts\build-updater.ps1"
+    if (Test-Path -LiteralPath $buildUpd) {
+        & $buildUpd -Quiet | Out-Null
+    }
+    if (Test-Path -LiteralPath $updExe) {
+        $dstToolsUpd = Join-Path $temp "tools"
+        New-Item -ItemType Directory -Force -Path $dstToolsUpd | Out-Null
+        Copy-Item $updExe -Destination $dstToolsUpd -Force
+        Write-Host "  updater   : UpdaterApp.exe"
+    } else { Write-Warning "Khong build duoc UpdaterApp.exe" }
+}
+
 # 1d. version.json (nguon phien ban cho ban cai)
 if (Test-Path -LiteralPath $versionFile) { Copy-Item $versionFile -Destination $temp }
 Write-Host "  version   : version.json"
