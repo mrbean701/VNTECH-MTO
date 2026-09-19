@@ -20,7 +20,6 @@
 
 # ---- Build output (installer / package) ----
 MTOPlugin/output/
-MTOPlugin/release/*/package.zip
 MTOPlugin/*.Setup.payload.zip
 
 # ---- File cài đặt đã đóng gói ----
@@ -65,3 +64,6 @@ desktop.ini
 # MTOPlugin/config/DANH_MUC_VAT_TU.xlsx  <- template danh mục
 # MTOPlugin/config/update.sample.json    <- cấu hình mẫu
 # MTOPlugin/docs/**/*.md, *.docx         <- tài liệu
+# ---- CHO PHEP release/ (nguon cap nhat cho GitHub) ----
+# package.zip + manifest.json la NOI DUNG PHAT HANH -> phai commit
+!MTOPlugin/release/**

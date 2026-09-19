@@ -3,7 +3,7 @@
   "channel": "stable",
   "checkOnStartup": "false",
   "checkIntervalHours": "24",
-  "updateSource": "",
+  "updateSource": "https://raw.githubusercontent.com/mrbean701/VNTECH-MTO/main/MTOPlugin/release",
   "keepBackups": "3",
-  "notes": "FILE MAU - khong sua file nay. Bo cai se copy thanh update.json (chi lan dau). Sua update.json de cau hinh. RANG BUOC: object PHANG, moi field 1 dong. enabled/checkOnStartup mac dinh FALSE de an toan - bat khi da co nguon cap nhat noi bo."
+  "notes": "FILE MAU - khong sua file nay. Bo cai se copy thanh update.json (chi lan dau). Sua update.json de cau hinh. RANG BUOC: object PHANG, moi field 1 dong. NGUON GITHUB: updateSource tro toi raw.githubusercontent.com cua repo (repo phai PUBLIC). UpdaterApp se doc <updateSource>/manifest.json roi tai <updateSource>/<package>."
 }
