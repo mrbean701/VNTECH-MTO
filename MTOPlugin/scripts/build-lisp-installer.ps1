@@ -118,11 +118,34 @@ $docFiles = @(
     "GIAI_THICH_RULE_EDITOR.md",
     "GIOI_THIEU_DU_AN.md",
     "HUONG_DAN_NHAP_DANH_MUC_VAT_TU.docx",
-    "HUONG_DAN_NHAP_DANH_MUC_VAT_TU.md"
+    "HUONG_DAN_NHAP_DANH_MUC_VAT_TU.md",
+    # Bo tai lieu du an (19/09/2026)
+    "HUONG_DAN_NGUOI_MOI.docx",
+    "HUONG_DAN_NGUOI_MOI.md",
+    "MO_TA_HE_THONG.docx",
+    "MO_TA_HE_THONG.md",
+    "BAN_GIAO.docx",
+    "BAN_GIAO.md",
+    "DEV_ONBOARDING.docx",
+    "DEV_ONBOARDING.md",
+    # Tai lieu module cap nhat (cho ky thuat)
+    "update\UPDATE_ARCHITECTURE.md",
+    "update\INSTALLATION.md",
+    "update\RELEASE_PROCESS.md",
+    "update\ROLLBACK.md",
+    "update\UPDATE_TROUBLESHOOTING.md",
+    "update\UPDATE_TEST_CASES.md"
 )
 foreach ($d in $docFiles) {
     $p = Join-Path $root "docs\$d"
-    if (Test-Path -LiteralPath $p) { Copy-Item $p -Destination $dstDocs }
+    if (Test-Path -LiteralPath $p) {
+        $sub = Split-Path $p -Parent
+        if ((Split-Path $d -Parent) -ne "") {
+            $sd = Join-Path $dstDocs (Split-Path $d -Parent)
+            New-Item -ItemType Directory -Force -Path $sd | Out-Null
+            Copy-Item $p -Destination $sd
+        } else { Copy-Item $p -Destination $dstDocs }
+      }
     else { Write-Warning "Thieu tai lieu: $d" }
 }
 Write-Host ("  docs      : {0} file" -f (Get-ChildItem $dstDocs).Count)
