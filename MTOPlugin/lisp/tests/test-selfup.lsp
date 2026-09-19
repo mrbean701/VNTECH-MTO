@@ -194,6 +194,31 @@
     "5" (cdr (assoc "keepBackups" gf)))
   (if (findfile cf) (vl-file-delete cf))
 
+  ;; ---------- TEST-14 (TASK-023): 3 lenh dung hanh vi ----------
+  (mto-assert-equal "selfup-14: manifest-url noi dung"
+    "https://x.local/mto/manifest.json"
+    (mto-upd-manifest-url "https://x.local/mto/"))
+  (mto-assert-equal "selfup-14: manifest-url bo /// thua"
+    "D:/rel/manifest.json"
+    (mto-upd-manifest-url "D:/rel///"))
+  (mto-assert-true "selfup-14: dem backup tra SO (khong phai list)"
+    (numberp (mto-upd-backup-list-count)))
+  ;; 3 lenh chay KHONG loi (khong assert output - chi kiem khong crash)
+  (mto-assert-true "selfup-14: MTOVERSION chay khong loi"
+    (not (vl-catch-all-error-p (vl-catch-all-apply 'c:MTOVERSION (list)))))
+  (mto-assert-true "selfup-14: MTOUPGRADECHECK chay khong loi (source rong)"
+    (not (vl-catch-all-error-p (vl-catch-all-apply 'c:MTOUPGRADECHECK (list)))))
+  (mto-assert-true "selfup-14: mto-upd-last-update chay khong loi"
+    (not (vl-catch-all-error-p (vl-catch-all-apply 'mto-upd-last-update (list)))))
+  (mto-assert-true "selfup-14: config tra du 6 khoa"
+    (= 6 (length (mto-upd-config))))
+
+  ;; ---------- Don marker do test tao ra (tranh rac trong repo) ----------
+  (setq gf (mto-upd-path *MTO-UPD-MARKER*))
+  (if (and gf (findfile gf)) (vl-file-delete gf))
+  (setq gf (mto-upd-path *MTO-UPD-DIR-STAGING*))
+  (if (and gf (vl-file-directory-p gf)) (vl-catch-all-apply 'vl-file-delete (list gf)))
+
   ;; ---------- Don file tam ----------
   (if (findfile tmp) (vl-file-delete tmp))
 

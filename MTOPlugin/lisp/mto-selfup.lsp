@@ -467,7 +467,7 @@
 ;; 14. LENH
 ;; ------------------------------------------------------------
 
-(defun c:MTOVERSION ( / mkr cfg)
+(defun c:MTOVERSION ( / mkr cfg lv)
   (mto-ui-start "MTOVERSION" "Xem phien ban / cap nhat gan nhat")
   (princ (strcat "\nPhien ban dang chay : " *MTO-VERSION*))
   (setq cfg (mto-upd-config))
@@ -482,8 +482,10 @@
                    " (can khoi dong lai AutoCAD: " (cdr (assoc "requires_restart" mkr)) ")"))
     (princ "\nKhong co ban nao dang cho kich hoat."))
   (princ (strcat "\nThu muc cai dat     : " (mto-upd-root)))
-  (princ (strcat "\nSo ban backup       : " (itoa (length (mto-upd-backup-list)))
+  (princ (strcat "\nSo ban backup       : " (itoa (mto-upd-backup-list-count))
                  " (giu toi da " (itoa *MTO-UPD-KEEP-BACKUPS*) ")"))
+  (setq lv (mto-upd-last-update))
+  (princ (strcat "\nLan cap nhat gan nhat: " (if lv lv "(chua co)")))
   (mto-ui-end "MTOVERSION"))
 
 (defun c:MTOUPGRADECHECK ( / cfg src valid msrc man dec)
@@ -581,6 +583,29 @@
 ;; Manifest day du (theo danh sach field bat buoc)
 (defun mto-upd-manifest-load (path)
   (mto-upd-json-load path *MTO-UPD-MANIFEST-REQUIRED*))
+
+;; ------------------------------------------------------------
+;; 10b. LAN CAP NHAT GAN NHAT (doc tu update.log)
+;; ------------------------------------------------------------
+(defun mto-upd-backup-list-count () (length (mto-upd-backup-list)))
+
+(defun mto-upd-last-update ( / p f line last sz)
+  (setq last nil)
+  (setq p (mto-upd-path *MTO-UPD-LOGFILE*))
+  (if p
+    (progn
+      (setq sz (vl-catch-all-apply 'vl-file-size (list p)))
+      (if (and (not (vl-catch-all-error-p sz)) sz (> sz 0))
+        (progn
+          (setq f (open p "r"))
+          (if f
+            (progn
+              (while (setq line (read-line f))
+                (if (or (mto-str-search line "INSTALL-OK")
+                        (mto-str-search line "ROLLBACK-OK"))
+                  (setq last line)))
+              (close f)))))))
+  last)
 
 (princ "\nmto-selfup.lsp loaded.")
 (princ)
