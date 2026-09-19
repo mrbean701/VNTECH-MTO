@@ -196,5 +196,36 @@
   (mto-write-results out-path)
   (princ))
 
+;; ---------- Canh bao doi tuong chua phan loai (UX fix 19/09) ----------
+(defun __t-orphan-setup ( / db)
+  (mto-db-clear)
+  ;; 2 mo coi / 5 tong = 40%
+  (setq db (list
+    (mto-item-new "Electrical" "T1" "N1")
+    (mto-item-new "Electrical" "T2" "N2")
+    (mto-item-new "Plumbing"   "T3" "N3")
+    (mto-item-new *MTO-CAT-OTHER* "L1" "L1")
+    (mto-item-new *MTO-CAT-OTHER* "L2" "L2")))
+  (mto-db-save db))
+
+(__t-orphan-setup)
+(mto-assert-equal "orphan: dem dung 2 doi tuong chua phan loai" 2 (mto-db-orphan-count))
+(mto-assert-true "orphan: ty le 40% (+-0.1)" (< (abs (- (mto-db-orphan-pct) 40.0)) 0.1))
+(mto-assert-true "orphan: 40% -> CO canh bao" (not (null (mto-db-orphan-warn))))
+
+;; 1 mo coi / 10 tong = 10% -> khong canh bao
+(mto-db-clear)
+(setq __db (list
+  (mto-item-new "Electrical" "T1" "N1") (mto-item-new "Electrical" "T2" "N2")
+  (mto-item-new "Electrical" "T3" "N3") (mto-item-new "Electrical" "T4" "N4")
+  (mto-item-new "Electrical" "T5" "N5") (mto-item-new "Electrical" "T6" "N6")
+  (mto-item-new "Electrical" "T7" "N7") (mto-item-new "Electrical" "T8" "N8")
+  (mto-item-new "Electrical" "T9" "N9")
+  (mto-item-new *MTO-CAT-OTHER* "L1" "L1")))
+(mto-db-save __db)
+(mto-assert-equal "orphan: dem 1" 1 (mto-db-orphan-count))
+(mto-assert-true "orphan: 10% -> KHONG canh bao" (null (mto-db-orphan-warn)))
+(mto-assert-true "orphan: DB rong -> 0%" (= 0.0 (mto-db-orphan-pct)))
+(mto-db-clear)
 (princ "\ntest-core.lsp loaded.")
 (princ)

@@ -44,6 +44,44 @@ người nhận bàn giao, dev mới) — trước đó tài liệu phân tán, 
 
 ---
 
+## 1d. SỬA UX CẢNH BÁO ĐỐI TƯỢNG CHƯA PHÂN LOẠI (✅ HOÀN THÀNH — B30)
+
+**Vấn đề người dùng báo:** bảng bóc tách dán vào AutoCAD hiển thị toàn
+`CATEGORY = "Other"`, cột TYPE/DESCRIPTION trùng tên LAYER, "không hiển thị tên và phân hệ".
+
+**Chẩn đoán (có bằng chứng):**
+| Kiểm tra | Kết quả |
+|---|---|
+| Quy tắc đòi hỏi layer | `EL-CAB-1C-*`, `EL-COND-EXP-*` (29 mẫu) |
+| Quy tắc đòi hỏi block | `EL-CB-*`, `EL-LIGHT-DL-*` (81 mẫu) |
+| Layer thực trong bản vẽ | `A_DOOR`, `A_WALL`, `A_THIN`, `Dim`, `TRUC`... |
+| **Khớp quy tắc** | **0/12 → 100% MỒ CÔI** |
+
+⇒ **Không phải bug code** — mà do bộ quy tắc mẫu dùng **tên giữ chỗ** `EL-*`,
+không khớp tên thật trong bản vẽ. Hệ thống lấy tên LAYER làm TYPE/DESCRIPTION
+để không mất dữ liệu (hành vi đúng thiết kế) — nhưng **gây hiểu nhầm** là bảng đã xong.
+
+**Đã sửa UX (B30):**
+- Thêm 4 hàm vào `mto-core.lsp`: `mto-db-orphan-count` · `mto-db-orphan-pct` ·
+  `mto-db-orphan-warn` (ngưỡng 30%) · `mto-db-orphan-report`
+- Gọi cảnh báo trong **3 lệnh xuất**: `MTOLIST` · `MTOTABLE` · `MTOCSV`
+  (đã kiểm chứng nằm TRONG hàm, depth=1)
+- `mto-geometry.lsp` dùng biến `*MTO-CAT-OTHER*` thay vì hard-code `"Other"`
+- **+6 test** cho ngưỡng cảnh báo (40% → cảnh báo · 10% → không · DB rỗng → 0%)
+
+**Bằng chứng thật (chạy trên bản ĐÃ CÀI):**
+```
+!!! CANH BAO: 40% doi tuong CHUA CO QUY TAC (2/5).
+    Bang khoi luong CO THE THIEU VAT TU. Hay chay MTOORPHAN de xem chi tiet,
+    roi bo sung quy tac (config/rules.json hoac DANH_MUC_VAT_TU.xlsx).
+DEM=2
+```
+
+**Còn lại (cần dữ liệu công ty):** người dùng sẽ tự điền `DANH_MUC_VAT_TU.xlsx`
+với tên layer/block thật → chạy `import-materials.ps1` → bộ quy tắc khớp.
+
+---
+
 ## 2. BASELINE KỸ THUẬT (PHASE 0 — đã audit)
 
 ### 2.1 Môi trường test THẬT (đã kiểm chứng)

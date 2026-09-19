@@ -448,6 +448,7 @@
 
           (vl-catch-all-apply 'vla-Delete (list tbl))
           (princ "\n(Da xoa bang mau.)")))))
+  (mto-db-orphan-report)
   (princ))
 
 (princ "\nmto-table.lsp loaded.")

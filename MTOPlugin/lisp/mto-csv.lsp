@@ -126,6 +126,7 @@
           (princ (strcat "\nDa xuat " (itoa (mto-db-count db)) " dong ra:"))
           (princ (strcat "\n  " path)))
         (princ "\nXuat that bai."))))
+  (mto-db-orphan-report)
   (princ))
 
 (princ "\nmto-csv.lsp loaded.")

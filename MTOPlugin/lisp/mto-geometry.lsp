@@ -220,7 +220,7 @@
           (progn
             (setq layer (cdr (assoc 8 (entget e))))
             ;; Gom theo layer: TYPE = layer, NAME = layer
-            (setq it (mto-item-new "Other" layer layer))
+            (setq it (mto-item-new *MTO-CAT-OTHER* layer layer))
             (setq it (mto-item-set it 'LAYER layer))
             (setq it (mto-item-set it 'PREFIX (mto-text-recognize-prefix layer)))
             (setq it (mto-item-set it 'CATEGORY

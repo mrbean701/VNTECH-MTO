@@ -319,5 +319,43 @@
     (setq i (1+ i)))
   out)
 
+;; ------------------------------------------------------------
+;; 6b. CANH BAO DOI TUONG CHUA PHAN LOAI (mo coi)
+;;
+;; Khi nhieu doi tuong KHONG khop quy tac nao, bang khoi luong
+;; CO THE THIEU VAT TU -> phai canh bao RO cho nguoi dung.
+;; ------------------------------------------------------------
+
+;; So item chua co quy tac (CATEGORY = *MTO-CAT-OTHER*)
+(defun mto-db-orphan-count ( / n)
+  (setq n 0)
+  (foreach it (mto-db-load)
+    (if (= (mto-item-get it 'CATEGORY) *MTO-CAT-OTHER*) (setq n (1+ n))))
+  n)
+
+;; Ty le % doi tuong chua phan loai
+(defun mto-db-orphan-pct ( / tot n)
+  (setq tot (length (mto-db-load)))
+  (if (= tot 0) 0.0
+    (* 100.0 (/ (float (mto-db-orphan-count)) (float tot)))))
+
+;; Chuoi canh bao neu ty le >= 30%, nguoc lai nil
+(defun mto-db-orphan-warn ( / n pct tot)
+  (setq tot (length (mto-db-load)))
+  (setq n (mto-db-orphan-count))
+  (setq pct (mto-db-orphan-pct))
+  (if (and (> n 0) (>= pct 30.0))
+    (strcat "!!! CANH BAO: " (mto-num->str pct) "% doi tuong CHUA CO QUY TAC ("
+            (itoa n) "/" (itoa tot)
+            "). Bang khoi luong CO THE THIEU VAT TU. Hay chay MTOORPHAN de xem chi tiet,"
+            " roi bo sung quy tac (config/rules.json hoac DANH_MUC_VAT_TU.xlsx).")
+    nil))
+
+;; In canh bao (neu co). Tra ve chuoi canh bao hoac nil.
+(defun mto-db-orphan-report ( / w)
+  (setq w (mto-db-orphan-warn))
+  (if w (princ (strcat "\n" w)))
+  w)
+
 (princ "\nmto-core.lsp loaded.")
 (princ)

@@ -114,6 +114,7 @@
       (if (null filt)
         (princ (strcat "\nKhong co dong nao thuoc he '" cat "'."))
         (mto-res-print filt))))
+  (mto-db-orphan-report)
   (princ))
 
 (princ "\nmto-result.lsp loaded.")
