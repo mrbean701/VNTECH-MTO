@@ -97,7 +97,7 @@ Mở `%LOCALAPPDATA%\MTOPro\config\update.json`, sửa:
   "channel": "stable",
   "checkOnStartup": "false",                    ← giữ false để không chậm AutoCAD
   "checkIntervalHours": "24",
-  "updateSource": "\\\\server\\share\\MTOPro",   ← nguồn cập nhật nội bộ
+  "updateSource": "https://raw.githubusercontent.com/mrbean701/VNTECH-MTO/main/MTOPlugin/release",
   "keepBackups": "3"
 }
 ```

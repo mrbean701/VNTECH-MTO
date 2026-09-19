@@ -104,6 +104,47 @@ Script **tự chạy TEST-15** (6 điểm) và in:
 > Điểm kiểm thứ 6 (`payload version`) là quan trọng nhất: nếu `version.json`
 > **trong gói** không khớp `manifest.version` thì updater sẽ **từ chối cài**.
 
+### Bước 4b — Đẩy lên GitHub (nguồn cập nhật)
+
+**Chiến lược 2 nhánh:**
+
+| Nhánh | Vai trò | Ai dùng |
+|---|---|---|
+| **`unity`** | **DEV** — code đang phát triển | Lập trình viên |
+| **`main`** | **RELEASE** — bản phát hành ổn định | Máy user (nguồn cập nhật) |
+
+**Nguồn cập nhật chính thức:**
+```
+https://raw.githubusercontent.com/mrbean701/VNTECH-MTO/main/MTOPlugin/release
+```
+
+**Quy trình đẩy:**
+
+```powershell
+# 1. Đẩy nhánh DEV trước
+git push origin unity
+
+# 2. Đồng bộ sang nhánh RELEASE (fast-forward)
+git checkout main
+git merge unity
+git push origin main
+git checkout unity        # về nhánh dev để làm tiếp
+```
+
+> `main` và `unity` thường **cùng commit** khi phát hành. Nhánh `main` là bản
+> "đóng băng" mà máy user tải về.
+
+**Kiểm tra sau khi push (bắt buộc):**
+```powershell
+# Phải trả 200
+curl.exe -s -o NUL -w "%{http_code}`n" `
+  https://raw.githubusercontent.com/mrbean701/VNTECH-MTO/main/MTOPlugin/release/manifest.json
+
+# Thử updater đọc nguồn GitHub
+& "$env:LOCALAPPDATA\MTOPro\tools\UpdaterApp.exe" --check `
+  --source https://raw.githubusercontent.com/mrbean701/VNTECH-MTO/main/MTOPlugin/release
+```
+
 ### Bước 5 — Đưa lên nguồn cập nhật
 
 Copy **cả cây `release\`** lên nguồn:
@@ -113,6 +154,7 @@ Copy **cả cây `release\`** lên nguồn:
 | **Thư mục mạng / NAS** | Copy `release\*` vào `\\server\share\MTOPro\` | `\\server\share\MTOPro` |
 | **HTTP nội bộ** | Copy vào web root (vd `https://update.congty.local/mto/`) | `https://update.congty.local/mto` |
 | **Thư mục cục bộ** (máy ngoại tuyến) | Copy vào `D:\MTOPro-Release\` | `D:\MTOPro-Release` |
+| **GitHub (raw)** | `git push origin main` | `https://raw.githubusercontent.com/mrbean701/VNTECH-MTO/main/MTOPlugin/release` |
 
 > **Quan trọng:** phải copy **cả** `manifest.json` (bản mới nhất) **và** thư mục
 > phiên bản. Updater đọc `manifest.json` ở gốc nguồn, rồi tải `package` theo tên.
