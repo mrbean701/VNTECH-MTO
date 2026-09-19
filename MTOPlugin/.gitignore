@@ -17,3 +17,7 @@ logs/
 
 # IDE
 .vscode/
+
+# NGOAI LE: template danh muc vat tu (can commit vi la deliverable)
+!config/DANH_MUC_VAT_TU.xlsx
+!config/update.sample.json
