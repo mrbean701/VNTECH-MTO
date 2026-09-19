@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>RuleMappingTest</AssemblyName>
+    <RootNamespace>MTOPlugin.Tests</RootNamespace>
+    <!-- KHONG tu dong include moi .cs trong thu muc tests/
+         (thu muc nay con project test NUnit cu, khong build duoc) -->
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RuleMappingTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Core la netstandard2.0 -> net8.0 dung duoc -->
+    <ProjectReference Include="..\src\MTOPlugin.Core\MTOPlugin.Core.csproj" />
+  </ItemGroup>
+
+</Project>

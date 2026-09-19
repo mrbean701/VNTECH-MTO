@@ -1,0 +1,67 @@
+# ============================================================
+# .gitignore — MTOPro / VNTECH-MTO
+# Mục tiêu: chỉ commit SOURCE + TÀI LIỆU, không commit build artifact
+# ============================================================
+
+# ---- DSH / tooling ----
+.dsh-vision-toolkit/
+.memsearch/
+.dsh-*/
+.agent-teams/
+*.dsh-tmp
+
+# ---- Build output (.NET) ----
+**/bin/
+**/obj/
+**/publish/
+*.pdb
+*.dll
+*.nupkg
+
+# ---- Build output (installer / package) ----
+MTOPlugin/output/
+MTOPlugin/release/*/package.zip
+MTOPlugin/*.Setup.payload.zip
+
+# ---- File cài đặt đã đóng gói ----
+*.exe
+MTOPlugin.Setup*.zip
+MTOPro.Setup*.zip
+
+# ---- Test artifacts ----
+MTOPlugin/lisp/tests/out/
+MTOPlugin/tests/TestDWG/
+MTOPlugin/tests/bin/
+MTOPlugin/tests/obj/
+
+# ---- Bản vẽ AutoCAD (dữ liệu lớn, không thuộc source) ----
+*.dwg
+*.dxf
+*.dwt
+*.bak
+*.sv$
+*.dwl
+*.dwl2
+*.ac$
+*.plt
+
+# ---- Log / runtime ----
+**/logs/
+*.log
+
+# ---- Cấu hình runtime của người dùng (không commit bản thật) ----
+MTOPlugin/config/rules.json
+MTOPlugin/config/update.json
+*.mtocfg
+
+# ---- Office temp ----
+~$*
+*.tmp
+Thumbs.db
+desktop.ini
+
+# ---- GIỮ LẠI (không ignore) ----
+# MTOPlugin/config/rules.sample.json     <- bộ quy tắc mẫu
+# MTOPlugin/config/DANH_MUC_VAT_TU.xlsx  <- template danh mục
+# MTOPlugin/config/update.sample.json    <- cấu hình mẫu
+# MTOPlugin/docs/**/*.md, *.docx         <- tài liệu

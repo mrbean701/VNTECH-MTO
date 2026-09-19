@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage SchemaVersion="1.0"
+    AutodeskProduct="AutoCAD"
+    ProductType="Application"
+    Name="MTOPlugin - Bot tach khoi luong M&E (nhom 2025-2026)"
+    AppVersion="0.1.0"
+    AppGUID="3b6a18de-4c92-4e1b-9a46-1c2a5e8d9f03"
+    Description="Plugin doc DWG, phan loai theo bo quy tac, xuat Excel. Nhieu phien ban AutoCad 2025-2026 (net8)."
+    FolderType="AutodeskRemove"
+    Author="Phong Du an">
+
+  <Components Description="Windows x64">
+
+    <RuntimeRequirements
+        OS="Win64"
+        Platform="AutoCAD"
+        SeriesMin="R25.0"
+        SeriesMax="R26.0" />
+
+    <ComponentEntry
+        ModuleName="./Contents/Windows/MTOPlugin.dll"
+        LaunchCommand="MTOZOOM"
+        AppName="MTOPlugin.Core"
+        AppDescription="Load MTOPlugin v2025-2026 (.NET 8)"
+        AppType="Extension"
+        LoadOnAutoCADStartup="True"
+        LoadOnCommandInvocation="False"
+        PerDocument="False" />
+
+  </Components>
+</ApplicationPackage>

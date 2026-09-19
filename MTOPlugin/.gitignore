@@ -1,0 +1,19 @@
+## Objs
+bin/
+obj/
+*.user
+.vs/
+*.suo
+packages/
+TestResults/
+logs/
+
+# NuGet / local
+*.nupkg
+
+# Excel/log output samples
+*.xlsx
+*.log
+
+# IDE
+.vscode/

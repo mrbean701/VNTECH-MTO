@@ -1,0 +1,799 @@
+{
+  "name": "MTO Rules - M&E Chuan",
+  "version": "2.0",
+  "description": "Bo quy tac chuan cho he thong dien, nuoc, dien nhe (ELV). Can bo ky su M&E xac nhan truoc khi dung trong san xuat.",
+  "createdBy": "Phong Du An - IT",
+  "lastModified": "2026-09-16T00:00:00",
+  "systems": [
+    { "code": "HE-DIEN", "name": "He thong dien", "description": "Dien chieu sang, o cam, tu dien, day cap, ong luon, khay cap", "unit": "" },
+    { "code": "HE-NUOC", "name": "He thong nuoc", "description": "Cap nuoc, thoat nuoc, thiet bi ve sinh, van", "unit": "" },
+    { "code": "HE-ELV-NET", "name": "Mang may tinh", "description": "Switch, router, firewall, AP, cap mang", "unit": "" },
+    { "code": "HE-ELV-DC", "name": "Phong may chu", "description": "Server, UPS, rack, PDU, patch panel", "unit": "" },
+    { "code": "HE-ELV-CCTV", "name": "Camera giam sat", "description": "Camera, NVR, monitor", "unit": "" },
+    { "code": "HE-ELV-ACC", "name": "Kiem soat ra vao", "description": "Controller, reader, lock", "unit": "" },
+    { "code": "HE-ELV-FA", "name": "Bao chay", "description": "FACP, smoke, heat, MCP, siren, strobe", "unit": "" },
+    { "code": "HE-ELV-PA", "name": "Am thanh thong bao", "description": "Speaker, amplifier, mic, mixer", "unit": "" },
+    { "code": "HE-ELV-TV", "name": "Truyen hinh / IPTV", "description": "IPTV server, set-top box, man hinh", "unit": "" },
+    { "code": "HE-ELV-INT", "name": "Intercom / Chuong cua", "description": "Man hinh, camera chuong cua", "unit": "" },
+    { "code": "HE-ELV-BMS", "name": "BMS / Toa nha thong minh", "description": "DDC, PLC, cam bien, bien tan", "unit": "" }
+  ],
+  "rules": [
+    {
+      "code": "R-DIEN-001", "version": "1.0", "description": "Ong luon dien PVC am tuong",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-001", "materialName": "Ong PVC day 20mm",
+      "specification": "PVC D20", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-COND-WALL-DN20;EL-COND-WALL-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-002", "version": "1.0", "description": "Ong luon dien PVC am san",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-002", "materialName": "Ong PVC am san",
+      "specification": "PVC D25", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-COND-SLAB-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-003", "version": "1.0", "description": "Ong luon dien noi",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-003", "materialName": "Ong noi",
+      "specification": "PVC D20", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-COND-EXP-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-004", "version": "1.0", "description": "Ong ruot ga",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-004", "materialName": "Ong ruot ga",
+      "specification": "Flexible D20", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-COND-FLX-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-005", "version": "1.0", "description": "Ong HDPE",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-005", "materialName": "Ong HDPE",
+      "specification": "HDPE D32", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-COND-HDPE-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 85, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-010", "version": "1.0", "description": "Cap dien 1 loi",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-010", "materialName": "Cap dien 1 loi",
+      "specification": "CV 1x2.5mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-CAB-1C-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-011", "version": "1.0", "description": "Cap dien 2 loi",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-011", "materialName": "Cap dien 2 loi",
+      "specification": "CV 2x2.5mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-CAB-2C-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLengthTimesFactor", "factor": 2.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-012", "version": "1.0", "description": "Cap dien 3 loi",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-012", "materialName": "Cap dien 3 loi",
+      "specification": "CV 3x2.5mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-CAB-3C-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLengthTimesFactor", "factor": 3.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-013", "version": "1.0", "description": "Cap dien 4 loi",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-013", "materialName": "Cap dien 4 loi",
+      "specification": "CV 4x2.5mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-CAB-4C-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLengthTimesFactor", "factor": 4.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-014", "version": "1.0", "description": "Cap nguon",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-014", "materialName": "Cap nguon",
+      "specification": "CVV 3x10+1x6mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-CAB-PWR-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-015", "version": "1.0", "description": "Day dan",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-015", "materialName": "Day dan",
+      "specification": "CV 1x1.5mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-WIRE-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-016", "version": "1.0", "description": "Cap chong chay",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-016", "materialName": "Cap chong chay",
+      "specification": "FR-CV 3x2.5mm2", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-CAB-FR-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-020", "version": "1.0", "description": "Khay cap JIS",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-020", "materialName": "Khay cap JIS",
+      "specification": "100x50mm", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-TRAY-J-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-021", "version": "1.0", "description": "Khay cap ladder",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-021", "materialName": "Khay cap ladder",
+      "specification": "200x100mm", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-TRAY-L-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-022", "version": "1.0", "description": "Khay cap perforated",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-022", "materialName": "Khay cap perforated",
+      "specification": "300x100mm", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-TRAY-P-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-023", "version": "1.0", "description": "Mang cap (raceway)",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-023", "materialName": "Mang cap",
+      "specification": "100x50mm", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "EL-RACEWAY-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-030", "version": "1.0", "description": "Den LED downlight",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-030", "materialName": "Den LED downlight 10W",
+      "specification": "10W, 4000K, 900lm", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-LIGHT-DL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-031", "version": "1.0", "description": "Den LED panel",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-031", "materialName": "Den LED panel",
+      "specification": "20W, 4000K", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-LIGHT-PNL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-032", "version": "1.0", "description": "Den LED track",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-032", "materialName": "Den LED track",
+      "specification": "20W", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-LIGHT-TRK-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-033", "version": "1.0", "description": "Den Exit",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-033", "materialName": "Den Exit",
+      "specification": "LED 3W", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-LIGHT-EXIT-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-034", "version": "1.0", "description": "Den khan cap",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-034", "materialName": "Den khan cap",
+      "specification": "Emergency LED", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-LIGHT-EM-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-040", "version": "1.0", "description": "O cam 1 phich",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-040", "materialName": "O cam 1 phich",
+      "specification": "16A, 250V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-OUT-1P-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-041", "version": "1.0", "description": "O cam 2 phich",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-041", "materialName": "O cam 2 phich",
+      "specification": "16A, 250V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-OUT-2P-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-042", "version": "1.0", "description": "O cam 3 phich",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-042", "materialName": "O cam 3 phich",
+      "specification": "16A, 250V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-OUT-3P-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-043", "version": "1.0", "description": "O cam cong nghiep",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-043", "materialName": "O cam cong nghiep",
+      "specification": "32A, IP44", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-OUT-IND-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-050", "version": "1.0", "description": "Cong tac 1 way",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-050", "materialName": "Cong tac 1 way",
+      "specification": "10A, 250V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-SW-1W-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-051", "version": "1.0", "description": "Cong tac 2 way",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-051", "materialName": "Cong tac 2 way",
+      "specification": "10A, 250V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-SW-2W-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-052", "version": "1.0", "description": "Cong tac dimmer",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-052", "materialName": "Cong tac dimmer",
+      "specification": "500W", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-SW-DIM-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-060", "version": "1.0", "description": "Tu dien chinh MDB",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-060", "materialName": "Tu dien chinh MDB",
+      "specification": "400A", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-PNL-MDB-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-061", "version": "1.0", "description": "Tu phan phoi DB",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-061", "materialName": "Tu phan phoi DB",
+      "specification": "100A", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-PNL-DB-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-062", "version": "1.0", "description": "CB module",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-062", "materialName": "CB module",
+      "specification": "MCB 1P-16A", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-CB-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-063", "version": "1.0", "description": "RCCB/ELCB",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-063", "materialName": "RCCB/ELCB",
+      "specification": "30mA", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-RCCB-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-070", "version": "1.0", "description": "Hop noi day",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-070", "materialName": "Hop noi day",
+      "specification": "100x100mm", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-JBOX-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-DIEN-071", "version": "1.0", "description": "Hop pulling",
+      "systemCode": "HE-DIEN", "materialCode": "VL-DIEN-071", "materialName": "Hop pulling",
+      "specification": "200x200mm", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "EL-PBOX-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-001", "version": "1.0", "description": "Ong PVC-C cap nuoc",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-001", "materialName": "Ong PVC-C",
+      "specification": "PVC-C DN20", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-PIPE-PVC-C-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-002", "version": "1.0", "description": "Ong PPR cap nuoc",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-002", "materialName": "Ong PPR",
+      "specification": "PPR DN25", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-PIPE-PPR-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-003", "version": "1.0", "description": "Ong HDPE cap nuoc",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-003", "materialName": "Ong HDPE",
+      "specification": "HDPE DN32", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-PIPE-HDPE-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-004", "version": "1.0", "description": "Ong INOX",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-004", "materialName": "Ong INOX",
+      "specification": "INOX DN25", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-PIPE-INOX-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-010", "version": "1.0", "description": "Ong thoat PVC",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-010", "materialName": "Ong thoat PVC",
+      "specification": "PVC DN50", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-DRAIN-PVC-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-011", "version": "1.0", "description": "Ong thoat HDPE",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-011", "materialName": "Ong thoat HDPE",
+      "specification": "HDPE DN75", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-DRAIN-HDPE-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-012", "version": "1.0", "description": "Ong thoan hoi",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-012", "materialName": "Ong thoan hoi",
+      "specification": "PVC DN50", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-VENT-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-013", "version": "1.0", "description": "Ong rong (soil)",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-013", "materialName": "Ong rong",
+      "specification": "PVC DN100", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "PLB-SOIL-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-020", "version": "1.0", "description": "Bon cau",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-020", "materialName": "Bon cau cat dua",
+      "specification": "TOTO CW922J", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIX-WC-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-021", "version": "1.0", "description": "Chau rua (lavabo)",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-021", "materialName": "Chau rua lavabo",
+      "specification": "TOTO LW236J", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIX-LAV-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-022", "version": "1.0", "description": "Chau rua bat",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-022", "materialName": "Chau rua bat",
+      "specification": "Inox 304", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIX-SINK-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-023", "version": "1.0", "description": "Bon tieu",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-023", "materialName": "Bon tieu",
+      "specification": "TOTO UWN250V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIX-UR-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-024", "version": "1.0", "description": "Voi sen",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-024", "materialName": "Voi sen",
+      "specification": "Inox 304", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIX-SHOWER-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-030", "version": "1.0", "description": "Van cong (gate valve)",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-030", "materialName": "Van cong",
+      "specification": "DN25, Brass", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-VALVE-GATE-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-031", "version": "1.0", "description": "Van bi (ball valve)",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-031", "materialName": "Van bi",
+      "specification": "DN25, 16bar", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-VALVE-BALL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-032", "version": "1.0", "description": "Van mot chieu (check valve)",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-032", "materialName": "Van mot chieu",
+      "specification": "DN25", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-VALVE-CHECK-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-033", "version": "1.0", "description": "Van giam ap (PRV)",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-033", "materialName": "Van giam ap",
+      "specification": "DN25", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-VALVE-PRV-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-040", "version": "1.0", "description": "Phu kien ong - Co 90",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-040", "materialName": "Co 90 do",
+      "specification": "DN25", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIT-ELB90-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-041", "version": "1.0", "description": "Phu kien ong - Co 45",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-041", "materialName": "Co 45 do",
+      "specification": "DN25", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIT-ELB45-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-042", "version": "1.0", "description": "Phu kien ong - Te",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-042", "materialName": "Te ong",
+      "specification": "DN25", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIT-TEE-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-043", "version": "1.0", "description": "Phu kien ong - Cut noi",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-043", "materialName": "Cut noi",
+      "specification": "DN25", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-FIT-CPL-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-050", "version": "1.0", "description": "Bom nuoc",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-050", "materialName": "Bom nuoc",
+      "specification": "2HP", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-PUMP-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-051", "version": "1.0", "description": "Bon nuoc",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-051", "materialName": "Bon nuoc",
+      "specification": "1000L", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-TANK-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-NUOC-052", "version": "1.0", "description": "May nuoc nong",
+      "systemCode": "HE-NUOC", "materialCode": "VL-NUOC-052", "materialName": "May nuoc nong",
+      "specification": "20L", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "PLB-GEY-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-NET-001", "version": "1.0", "description": "Switch Core",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-001", "materialName": "Switch Core",
+      "specification": "48GE, Layer3", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-CORE-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-002", "version": "1.0", "description": "Switch Distribution",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-002", "materialName": "Switch Distribution",
+      "specification": "24GE", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-DIST-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-003", "version": "1.0", "description": "Switch Access",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-003", "materialName": "Switch Access",
+      "specification": "24GE PoE+", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-ACC-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-004", "version": "1.0", "description": "Switch PoE",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-004", "materialName": "Switch PoE",
+      "specification": "24GE PoE+, 370W", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-POE-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-005", "version": "1.0", "description": "Router",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-005", "materialName": "Router",
+      "specification": "Gigabit", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-RTR-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-006", "version": "1.0", "description": "Firewall",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-006", "materialName": "Firewall",
+      "specification": "Next-Gen", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-FW-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-007", "version": "1.0", "description": "WiFi Controller",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-007", "materialName": "WiFi Controller",
+      "specification": "50 AP", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-WLC-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-008", "version": "1.0", "description": "Access Point WiFi",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-008", "materialName": "Access Point WiFi 6",
+      "specification": "AX1800, Ceiling mount", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-AP-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-009", "version": "1.0", "description": "IP Phone",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-009", "materialName": "IP Phone",
+      "specification": "VoIP", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-NET-PHONE-*" }],
+      "calculation": "Count", "priority": 85, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-010", "version": "1.0", "description": "Cap Cat6",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-010", "materialName": "Cap Cat6",
+      "specification": "Cat6, UTP", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "ELV-NET-CAB-CAT6-*;ELV-CAB-CAT6-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-011", "version": "1.0", "description": "Cap Cat6A",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-011", "materialName": "Cap Cat6A",
+      "specification": "Cat6A, S/FTP", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "ELV-NET-CAB-CAT6A-*;ELV-CAB-CAT6A-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.05, "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-012", "version": "1.0", "description": "Cap Cat7",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-012", "materialName": "Cap Cat7",
+      "specification": "Cat7, S/FTP", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "ELV-NET-CAB-CAT7-*;ELV-CAB-CAT7-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-013", "version": "1.0", "description": "Cap Fiber MM OM3",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-013", "materialName": "Cap Fiber MM OM3",
+      "specification": "50/125um", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "ELV-NET-CAB-FOMM3-*;ELV-CAB-FOMM3-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-NET-014", "version": "1.0", "description": "Cap Fiber SM",
+      "systemCode": "HE-ELV-NET", "materialCode": "VL-ELV-014", "materialName": "Cap Fiber SM",
+      "specification": "9/125um", "unit": "m",
+      "conditions": [{ "entityKind": "geometry", "layers": "ELV-NET-CAB-FOSM-*;ELV-CAB-FOSM-*", "geometryKinds": "Polyline;Polyline2D;Polyline3D;Line" }],
+      "calculation": "SumLength", "factor": 1.0, "priority": 90, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-DC-001", "version": "1.0", "description": "Tu rack 42U",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-201", "materialName": "Tu rack 42U",
+      "specification": "42U, 600x1000mm", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-RACK-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-002", "version": "1.0", "description": "Server",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-202", "materialName": "Server",
+      "specification": "1U, Rack mount", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-SRV-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-003", "version": "1.0", "description": "Storage/NAS",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-203", "materialName": "Storage/NAS",
+      "specification": "24 bay", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-STOR-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-004", "version": "1.0", "description": "UPS",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-204", "materialName": "UPS 10kVA Online",
+      "specification": "10kVA, 10kW, 30min", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-UPS-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-005", "version": "1.0", "description": "PDU",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-205", "materialName": "PDU",
+      "specification": "32A, 24 outlet", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-PDU-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-006", "version": "1.0", "description": "Patch Panel",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-206", "materialName": "Patch Panel 24 port",
+      "specification": "Cat6, 24 port", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-PP-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-007", "version": "1.0", "description": "ODF (Fiber)",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-207", "materialName": "ODF 24 port",
+      "specification": "24 port, SC/LC", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-ODF-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-008", "version": "1.0", "description": "Switch Data Center",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-208", "materialName": "Switch Data Center",
+      "specification": "10GbE", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-SW-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-DC-009", "version": "1.0", "description": "KVM Switch",
+      "systemCode": "HE-ELV-DC", "materialCode": "VL-ELV-209", "materialName": "KVM Switch",
+      "specification": "16 port", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-DC-KVM-*" }],
+      "calculation": "Count", "priority": 85, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-CCTV-001", "version": "1.0", "description": "Camera Dome",
+      "systemCode": "HE-ELV-CCTV", "materialCode": "VL-ELV-301", "materialName": "Camera IP Dome 4MP",
+      "specification": "4MP, IR 30m, IP67", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-CAM-DOME-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-CCTV-002", "version": "1.0", "description": "Camera Bullet",
+      "systemCode": "HE-ELV-CCTV", "materialCode": "VL-ELV-302", "materialName": "Camera IP Bullet 4MP",
+      "specification": "4MP, IR 50m, IP67", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-CAM-BUL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-CCTV-003", "version": "1.0", "description": "Camera PTZ",
+      "systemCode": "HE-ELV-CCTV", "materialCode": "VL-ELV-303", "materialName": "Camera PTZ",
+      "specification": "2MP, 30x zoom", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-CAM-PTZ-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-CCTV-004", "version": "1.0", "description": "Dau ghi NVR",
+      "systemCode": "HE-ELV-CCTV", "materialCode": "VL-ELV-304", "materialName": "NVR 32 kenh",
+      "specification": "32CH, 4HDD, 4K", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-CAM-NVR-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-CCTV-005", "version": "1.0", "description": "Man hinh giam sat",
+      "systemCode": "HE-ELV-CCTV", "materialCode": "VL-ELV-305", "materialName": "Man hinh giam sat",
+      "specification": "55 inch, 4K", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-CAM-MON-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-CCTV-006", "version": "1.0", "description": "Camera Fisheye",
+      "systemCode": "HE-ELV-CCTV", "materialCode": "VL-ELV-306", "materialName": "Camera Fisheye",
+      "specification": "12MP, 360", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-CAM-FISH-*" }],
+      "calculation": "Count", "priority": 85, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-ACC-001", "version": "1.0", "description": "Controller trung tam",
+      "systemCode": "HE-ELV-ACC", "materialCode": "VL-ELV-401", "materialName": "Controller trung tam",
+      "specification": "4 door", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-ACC-CTRL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-ACC-002", "version": "1.0", "description": "Dau doc the RFID",
+      "systemCode": "HE-ELV-ACC", "materialCode": "VL-ELV-402", "materialName": "Dau doc the RFID",
+      "specification": "125kHz, Wiegand", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-ACC-RDR-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-ACC-003", "version": "1.0", "description": "Dau doc van tay",
+      "systemCode": "HE-ELV-ACC", "materialCode": "VL-ELV-403", "materialName": "Dau doc van tay",
+      "specification": "Fingerprint, IP65", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-ACC-FP-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-ACC-004", "version": "1.0", "description": "Dau doc khuon mat",
+      "systemCode": "HE-ELV-ACC", "materialCode": "VL-ELV-404", "materialName": "Dau doc khuon mat",
+      "specification": "Face recognition", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-ACC-FACE-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-ACC-005", "version": "1.0", "description": "Khoa dien tu (Maglock)",
+      "systemCode": "HE-ELV-ACC", "materialCode": "VL-ELV-405", "materialName": "Khoa dien tu 280kg",
+      "specification": "280kgf, 12V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-ACC-MAG-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-ACC-006", "version": "1.0", "description": "Nut Exit",
+      "systemCode": "HE-ELV-ACC", "materialCode": "VL-ELV-406", "materialName": "Nut Exit",
+      "specification": "Push to exit", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-ACC-EXIT-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-FA-001", "version": "1.0", "description": "Tu trung tam FACP",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-501", "materialName": "Tu trung tam FACP",
+      "specification": "Addressable, 2 loop", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-PANEL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-FA-002", "version": "1.0", "description": "Dau bao khoi",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-502", "materialName": "Dau bao khoi dua len",
+      "specification": "Addressable, 24V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-SMOKE-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-FA-003", "version": "1.0", "description": "Dau bao nhiet",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-503", "materialName": "Dau bao nhiet",
+      "specification": "68°C", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-HEAT-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-FA-004", "version": "1.0", "description": "Nut nhan MCP",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-504", "materialName": "Nut nhan khan cap",
+      "specification": "Addressable, IP67", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-MCP-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-FA-005", "version": "1.0", "description": "Chuong bao",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-505", "materialName": "Chuong bao chay",
+      "specification": "24V, 95dB", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-BELL-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-FA-006", "version": "1.0", "description": "Den strobe",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-506", "materialName": "Den strobe bao chay",
+      "specification": "24V, Xenon", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-STRB-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-FA-007", "version": "1.0", "description": "Cach ly (Isolator)",
+      "systemCode": "HE-ELV-FA", "materialCode": "VL-ELV-507", "materialName": "Cach ly bao chay",
+      "specification": "Addressable", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-FA-ISO-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-PA-001", "version": "1.0", "description": "Loa am tran",
+      "systemCode": "HE-ELV-PA", "materialCode": "VL-ELV-601", "materialName": "Loa am tran 6W",
+      "specification": "6W, 100V, Ceiling", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-PA-SPK-CL-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-PA-002", "version": "1.0", "description": "Loa nen (horn)",
+      "systemCode": "HE-ELV-PA", "materialCode": "VL-ELV-602", "materialName": "Loa nen",
+      "specification": "20W, 100V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-PA-SPK-HN-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-PA-003", "version": "1.0", "description": "Amplifier",
+      "systemCode": "HE-ELV-PA", "materialCode": "VL-ELV-603", "materialName": "Amplifier 120W",
+      "specification": "120W, 100V", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-PA-AMP-*" }],
+      "calculation": "Count", "priority": 100, "status": "Active"
+    },
+    {
+      "code": "R-ELV-PA-004", "version": "1.0", "description": "Mixer Amplifier",
+      "systemCode": "HE-ELV-PA", "materialCode": "VL-ELV-604", "materialName": "Mixer Amplifier",
+      "specification": "240W, 6 zone", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-PA-MIXER-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-PA-005", "version": "1.0", "description": "Zone Selector",
+      "systemCode": "HE-ELV-PA", "materialCode": "VL-ELV-605", "materialName": "Zone Selector",
+      "specification": "6 zone", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-PA-ZONE-*" }],
+      "calculation": "Count", "priority": 85, "status": "Active"
+    },
+
+    {
+      "code": "R-ELV-BMS-001", "version": "1.0", "description": "DDC Controller",
+      "systemCode": "HE-ELV-BMS", "materialCode": "VL-ELV-701", "materialName": "DDC Controller",
+      "specification": "BACnet", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-BMS-DDC-*" }],
+      "calculation": "Count", "priority": 95, "status": "Active"
+    },
+    {
+      "code": "R-ELV-BMS-002", "version": "1.0", "description": "Cam bien nhiet do",
+      "systemCode": "HE-ELV-BMS", "materialCode": "VL-ELV-702", "materialName": "Cam bien nhiet do",
+      "specification": "-20~60°C, 4-20mA", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-BMS-TEMP-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-BMS-003", "version": "1.0", "description": "Bien tan VFD",
+      "systemCode": "HE-ELV-BMS", "materialCode": "VL-ELV-703", "materialName": "Bien tan VFD",
+      "specification": "5HP, 3 phase", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-BMS-VFD-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-INT-001", "version": "1.0", "description": "Man hinh trong nha",
+      "systemCode": "HE-ELV-INT", "materialCode": "VL-ELV-801", "materialName": "Man hinh Intercom",
+      "specification": "7 inch, Touch", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-INT-IND-*" }],
+      "calculation": "Count", "priority": 90, "status": "Active"
+    },
+    {
+      "code": "R-ELV-TV-001", "version": "1.0", "description": "Set-top Box IPTV",
+      "systemCode": "HE-ELV-TV", "materialCode": "VL-ELV-901", "materialName": "Set-top Box IPTV",
+      "specification": "4K, HDMI", "unit": "cai",
+      "conditions": [{ "entityKind": "block", "blockNames": "ELV-TV-STB-*" }],
+      "calculation": "Count", "priority": 85, "status": "Active"
+    }
+  ]
+}

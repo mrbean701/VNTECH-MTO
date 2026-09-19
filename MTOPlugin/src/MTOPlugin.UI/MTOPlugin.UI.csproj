@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      UI co the chay tren net48 (AutoCAD 2018-2024) hoac net8.0-windows (AutoCAD 2025+).
+      Host chon TFM nao thi ProjectReference tu dong lay TFM tuong ung.
+    -->
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>MTOPlugin.UI</AssemblyName>
+    <RootNamespace>MTOPlugin.UI</RootNamespace>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>0.1.0</Version>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <EnableWindowsTargeting Condition="'$(TargetFramework)' == 'net8.0-windows'">true</EnableWindowsTargeting>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MTOPlugin.Core\MTOPlugin.Core.csproj" />
+    <ProjectReference Include="..\MTOPlugin.Logging\MTOPlugin.Logging.csproj" />
+  </ItemGroup>
+
+</Project>

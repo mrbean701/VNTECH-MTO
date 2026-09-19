@@ -1,0 +1,89 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--
+      AutoCAD 2025+ chay tren .NET 8 (managed API build net8.0-windows).
+      AutoCAD 2018-2024 dung .NET Framework -> build net48.
+      Chon TFM tu dong theo AcadDirectory (AutoCAD 2025/2026 -> net8.0-windows),
+      hoac truyen -p:MtoNet8=true|false.
+    -->
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>MTOPlugin</AssemblyName>
+    <RootNamespace>MTOPlugin</RootNamespace>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>0.1.0</Version>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    <!--
+      Mac dinh tham chieu toi AutoCAD moi nhat co tren may.
+      De build cho phien ban cu the:
+        dotnet build MTOPlugin.sln /p:AcadDirectory="C:\Program Files\Autodesk\AutoCAD 2020"
+      Hoac dung scripts/build.ps1 -AcadVersion 2020.
+    -->
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2025\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2025</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2024\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2024</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2023\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2023</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2022\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2022</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2021\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2021</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2020\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2020</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2019\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2019</AcadDirectory>
+    <AcadDirectory Condition="'$(AcadDirectory)' == '' And Exists('C:\Program Files\Autodesk\AutoCAD 2018\acad.exe')">C:\Program Files\Autodesk\AutoCAD 2018</AcadDirectory>
+
+    <!-- Auto-detect: AutoCAD 2025/2026 -> net8.0-windows -->
+    <MtoNet8 Condition="'$(MtoNet8)' == '' And '$(AcadDirectory)' != '' And ($(AcadDirectory.Contains('AutoCAD 2025')) Or $(AcadDirectory.Contains('AutoCAD 2026')))">true</MtoNet8>
+
+    <!--
+      AutoCAD 2025+ chay tren .NET 8 (managed API build net8.0-windows).
+      AutoCAD 2018-2024 dung .NET Framework -> build net48.
+      Chon TFM tu dong theo AcadDirectory (AutoCAD 2025/2026 -> net8.0-windows),
+      hoac truyen -p:MtoNet8=true|false.
+    -->
+    <TargetFrameworks Condition="'$(MtoNet8)' == 'true'">net8.0-windows</TargetFrameworks>
+    <TargetFrameworks Condition="'$(MtoNet8)' != 'true'">net48</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MTOPlugin.Core\MTOPlugin.Core.csproj" />
+    <ProjectReference Include="..\MTOPlugin.UI\MTOPlugin.UI.csproj" />
+    <ProjectReference Include="..\MTOPlugin.Logging\MTOPlugin.Logging.csproj" />
+  </ItemGroup>
+
+  <!-- Tham chieu framework cho AutoCAD 2018-2024 (net48) -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="netstandard" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+
+  <!-- Tham chieu AutoCAD API (Private=false: khong copy DLL AutoCAD vao output) -->
+  <ItemGroup Condition="'$(AcadDirectory)' != ''">
+    <Reference Include="AcDbMgd"><HintPath>$(AcadDirectory)\AcDbMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AcMgd"><HintPath>$(AcadDirectory)\AcMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AcCoreMgd"><HintPath>$(AcadDirectory)\AcCoreMgd.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AcWindows"><HintPath>$(AcadDirectory)\AcWindows.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="AdWindows"><HintPath>$(AcadDirectory)\AdWindows.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\config\rules.sample.json" Link="config\rules.sample.json"
+             CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="WarnNoAcad" BeforeTargets="CoreCompile" Condition="'$(AcadDirectory)' == ''">
+    <Warning Text="Autodesk AutoCAD khong tim thay tren may nay. Neu build loi, hay truyen /p:AcadDirectory='path-to-autocad'." />
+  </Target>
+
+</Project>

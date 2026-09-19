@@ -1,0 +1,45 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTOPlugin.Core", "src\MTOPlugin.Core\MTOPlugin.Core.csproj", "{A1B2C3D4-0001-4A5B-9CA1-111111111111}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTOPlugin", "src\MTOPlugin\MTOPlugin.csproj", "{A1B2C3D4-0002-4A5B-9CA1-222222222222}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTOPlugin.UI", "src\MTOPlugin.UI\MTOPlugin.UI.csproj", "{A1B2C3D4-0003-4A5B-9CA1-333333333333}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTOPlugin.Logging", "src\MTOPlugin.Logging\MTOPlugin.Logging.csproj", "{A1B2C3D4-0004-4A5B-9CA1-444444444444}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MTOPlugin.Tests", "tests\MTOPlugin.Tests\MTOPlugin.Tests.csproj", "{A1B2C3D4-0005-4A5B-9CA1-555555555555}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1B2C3D4-0001-4A5B-9CA1-111111111111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-0001-4A5B-9CA1-111111111111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-0001-4A5B-9CA1-111111111111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-0001-4A5B-9CA1-111111111111}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-0002-4A5B-9CA1-222222222222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-0002-4A5B-9CA1-222222222222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-0002-4A5B-9CA1-222222222222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-0002-4A5B-9CA1-222222222222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-0003-4A5B-9CA1-333333333333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-0003-4A5B-9CA1-333333333333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-0003-4A5B-9CA1-333333333333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-0003-4A5B-9CA1-333333333333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-0004-4A5B-9CA1-444444444444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-0004-4A5B-9CA1-444444444444}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-0004-4A5B-9CA1-444444444444}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-0004-4A5B-9CA1-444444444444}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-0005-4A5B-9CA1-555555555555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-0005-4A5B-9CA1-555555555555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-0005-4A5B-9CA1-555555555555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-0005-4A5B-9CA1-555555555555}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
