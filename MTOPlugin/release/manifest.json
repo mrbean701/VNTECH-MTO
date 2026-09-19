@@ -1,0 +1,12 @@
+{
+  "product": "MTOPro",
+  "version": "1.0.0",
+  "release_date": "2026-09-19",
+  "package": "package.zip",
+  "sha256": "66b7c95785a90a881a1bab2f8ae0a6ee39074cedf2b08a99ea8a792c6cf0ba6c",
+  "size_bytes": 424535,
+  "minimum_version": "1.0.0",
+  "minimum_autocad": "24.0",
+  "mandatory": "false",
+  "release_notes": "Ban 1.0.0 - module update system (TASK-024)"
+}
