@@ -163,6 +163,37 @@
   (mto-assert-true "selfup-16: nguon rong -> tu choi"
     (null (car (mto-upd-source-valid-p ""))))
 
+  ;; ---------- TEST-22 (TASK-022): doc config update.json ----------
+  (setq mf (mto-upd-config))
+  (mto-assert-equal "selfup-22: config thieu file -> enabled mac dinh false"
+    "false" (cdr (assoc 'ENABLED mf)))
+  (mto-assert-equal "selfup-22: config thieu file -> keepBackups mac dinh 3"
+    "3" (cdr (assoc 'KEEP mf)))
+  (mto-assert-equal "selfup-22: config thieu file -> channel stable"
+    "stable" (cdr (assoc 'CHANNEL mf)))
+  (mto-assert-equal "selfup-22: config thieu file -> source rong"
+    "" (cdr (assoc 'SOURCE mf)))
+  ;; Ghi config that roi doc lai
+  (setq cf (vl-filename-mktemp "mtocfg.json"))
+  (ts-write cf (list "{"
+                     "  \"enabled\": \"true\","
+                     "  \"channel\": \"stable\","
+                     "  \"checkOnStartup\": \"true\","
+                     "  \"checkIntervalHours\": \"12\","
+                     "  \"updateSource\": \"https://update.noibo.local/mto\","
+                     "  \"keepBackups\": \"5\""
+                     "}"))
+  (setq gf (mto-upd-json-load cf (list "enabled" "channel" "checkOnStartup" "checkIntervalHours" "updateSource" "keepBackups")))
+  (mto-assert-equal "selfup-22: doc config that -> enabled true"
+    "true" (cdr (assoc "enabled" gf)))
+  (mto-assert-equal "selfup-22: doc config that -> interval 12"
+    "12" (cdr (assoc "checkIntervalHours" gf)))
+  (mto-assert-equal "selfup-22: doc config that -> source dung"
+    "https://update.noibo.local/mto" (cdr (assoc "updateSource" gf)))
+  (mto-assert-equal "selfup-22: doc config that -> keepBackups 5"
+    "5" (cdr (assoc "keepBackups" gf)))
+  (if (findfile cf) (vl-file-delete cf))
+
   ;; ---------- Don file tam ----------
   (if (findfile tmp) (vl-file-delete tmp))
 

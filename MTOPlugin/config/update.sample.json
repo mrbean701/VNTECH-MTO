@@ -1,0 +1,9 @@
+{
+  "enabled": "false",
+  "channel": "stable",
+  "checkOnStartup": "false",
+  "checkIntervalHours": "24",
+  "updateSource": "",
+  "keepBackups": "3",
+  "notes": "FILE MAU - khong sua file nay. Bo cai se copy thanh update.json (chi lan dau). Sua update.json de cau hinh. RANG BUOC: object PHANG, moi field 1 dong. enabled/checkOnStartup mac dinh FALSE de an toan - bat khi da co nguon cap nhat noi bo."
+}

@@ -68,6 +68,10 @@ $dstCfg = Join-Path $temp "config"
 New-Item -ItemType Directory -Force -Path $dstCfg | Out-Null
 $rules = Join-Path $root "config\rules.sample.json"
 if (Test-Path -LiteralPath $rules) { Copy-Item $rules -Destination $dstCfg }
+# Cau hinh cap nhat mau (ship kem; bo cai se seed thanh update.json lan dau)
+$updSample = Join-Path $root "config\update.sample.json"
+if (Test-Path -LiteralPath $updSample) { Copy-Item $updSample -Destination $dstCfg }
+
 # Template danh muc vat tu (de nguoi dung dien)
 $tmpl = Join-Path $root "config\DANH_MUC_VAT_TU.xlsx"
 if (Test-Path -LiteralPath $tmpl) { Copy-Item $tmpl -Destination $dstCfg }

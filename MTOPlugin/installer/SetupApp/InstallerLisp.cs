@@ -407,6 +407,25 @@ namespace MTOPro.Setup
             }
             catch (Exception exT) { Log("Loi cai template danh muc: " + exT.Message); }
 
+            // 2b-2) CAU HINH CAP NHAT: update.sample.json (app) + seed update.json (user, chi lan dau)
+            try
+            {
+                string srcUpd = Path.Combine(tmp, "config", "update.sample.json");
+                if (File.Exists(srcUpd))
+                {
+                    string dstSample = Path.Combine(ConfigDir, "update.sample.json");
+                    File.Copy(srcUpd, dstSample, true);   // file mau: duoc cap nhat
+                    string dstUser = Path.Combine(ConfigDir, "update.json");
+                    if (!File.Exists(dstUser))
+                    {
+                        File.Copy(srcUpd, dstUser, false); // USER DATA: chi seed lan dau
+                        Log("Da seed update.json (lan dau) -> " + dstUser);
+                    }
+                    else Log("update.json da ton tai (giu nguyen cau hinh nguoi dung).");
+                }
+            }
+            catch (Exception exU) { Log("Loi cai update.sample.json: " + exU.Message); }
+
             // 2c) CONG CU (tools/*.ps1): import danh muc vat tu
             try
             {
