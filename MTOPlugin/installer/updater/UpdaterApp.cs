@@ -47,6 +47,18 @@ namespace MTOPro.Updater
         private static int Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
+
+            // ===== BAT BUOC CHO HTTPS HIEN DAI =====
+            // .NET Framework 4.8 MAC DINH co the dung TLS 1.0 -> GitHub/HTTPS
+            // hien dai TU CHOI ("Could not create SSL/TLS secure channel").
+            // Phai bat TLS 1.2/1.3 TUONG MINH truoc moi request.
+            try
+            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+                try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)12288; } catch { } // Tls13
+            }
+            catch (Exception exTls) { Log("CANH BAO: khong bat duoc TLS 1.2: " + exTls.Message); }
+
             try
             {
                 string mode = "status";
